@@ -1,0 +1,5 @@
+Települések nevei:
+https://github.com/Gvwyn/varmegyek/tree/main
+
+Koordináták:
+https://www.geoapify.com/tools/geocoding-online/
