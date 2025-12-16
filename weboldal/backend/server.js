@@ -166,10 +166,6 @@ app.delete("/api/like/:fiok_id/:tortenet_id",(req,res)=>
     });
 });
 
-app.delete("/api/hozzaszolas/:id",(req,res)=>{
-    db.query("")
-})
-
 //Szerver indítása
 
 const PORT = 3000;
