@@ -42,12 +42,61 @@ app.get("/api/terkep",(req,res)=>{
 });
 
 app.get("/api/fiokok", (req, res) => {
-    const{felhasznalonev,jelszo} = req.body;
-    db.query("SELECT id,felhasznalonev,email,jelszo,kituntetes,COUNT(fiok_id) AS likes FROM fiokok LEFT JOIN likes ON fiok_id=id WHERE felhasznalonev=? AND jelszo=?;",[felhasznalonev,jelszo], (err, results) => {
+    const{felhasznalonev,jelszo} = req.query;
+    db.query("SELECT * FROM fiokok WHERE felhasznalonev=? AND jelszo=?;",[felhasznalonev,jelszo], (err, results) => {
         if (err) throw err;
         res.json(results[0]);
     });
 });
+
+app.get("/api/felhasznalonev", (req, res) => {
+    const{felhasznalonev} = req.query;
+    db.query("SELECT * FROM fiokok WHERE felhasznalonev=?;",[felhasznalonev], (err, results) => {
+        if (err) throw err;
+        res.json(results);
+    });
+});
+
+app.get("/api/tortenet/:telepules",(req,res)=>{
+    const telepules=req.params.telepules;
+    db.query("SELECT *,COUNT(likes.tortenet_id) AS likes FROM tortenetek LEFT JOIN likes ON tortenetek.id=likes.tortenet_id JOIN tortenet_telepules ON tortenet_telepules.tortenet_id=tortenetek.id JOIN telepulesek ON telepulesek.id=tortenet_telepules.telepules_id GROUP BY telepulesek.id HAVING telepules=?;",[telepules],(err,results)=>{
+        if(err) throw err;
+        res.json(results);
+    });
+});
+
+app.get("/api/tortenetek/:id",(req,res)=>
+{
+    const id=req.params.id;
+    db.query("SELECT * FROM tortenetek WHERE fiok_id=?",[id],(err,results)=>{
+        if(err) throw err;
+        res.json(results);
+    });
+});
+
+app.get("/api/tortenetek/:fiok_id/:id",(req,res)=>{
+    const id=req.params.id;
+    db.query("SELECT * FROM tortenetek JOIN tortenet_telepules ON tortenet_id=tortenetek.id JOIN telepulesek ON telepules_id=telepulesek.id WHERE tortenetek.id=?",[id],(err,results)=>{
+        if(err) throw err;
+        res.json(results[0]);
+    });
+});
+
+app.get("/api/fiokok/:id",(req,res)=>{
+    const id=req.params.id;
+    db.query("SELECT * FROM fiokok WHERE id=?",[id],(err,results)=>{
+        if(err) throw err;
+        res.json(results[0]);
+    });
+});
+
+app.get("/api/tortenet/telepules/:id",(req,res)=>{
+    const id=req.params.id;
+    db.query("SELECT * FROM tortenetek JOIN tortenet_telepules ON tortenet_id=tortenetek.id JOIN telepulesek ON telepules_id=telepulesek.id WHERE tortenetek.id=?",[id],(err,results)=>{
+        if(err) throw err;
+        res.json(results[0]);
+    });
+})
 
 //Feltöltések
 
@@ -135,20 +184,29 @@ app.put("/api/tortenetek/:id", (req, res) => {
 
 app.delete("/api/fiokok/:id", (req, res) => {
     const id=req.params.id;
-    db.query("DELETE FROM fiokok WHERE id=?", [id], (err) => {
-        if (err) throw err;
-        res.json({message:"Fiók törölve."});
+    db.query("SELECT id FROM tortenetek WHERE fiok_id=?",[id],(err,results)=>{
+        if(err) throw err;
+        results.forEach(i=>{
+            db.query("DELETE FROM tortenet_telepules WHERE tortenet_id=?",[i.id],(err)=>{
+                if(err) throw err;
+            });   
+        });
+        db.query("DELETE FROM tortenetek WHERE fiok_id=?",[id],(err)=>{
+            if(err) throw err;
+            db.query("DELETE FROM fiokok WHERE id=?",[id],(err)=>{
+                if(err) throw err;
+            });
+            res.json({message:"Fiók törölve"});
+        });
     });
 });
 
 app.delete("/api/tortenetek/:id",(req,res)=>
 {
     const id=req.params.id;
-    db.query("DELETE FROM tortenet_telepules WHERE tortenet_id=?",[id],(err)=>
-    {
+    db.query("DELETE FROM tortenet_telepules WHERE tortenet_id=?",[id],(err)=>{
         if(err) throw err;
-        db.query("DELETE FROM tortenetek WHERE id=?",[id],(err)=>
-        {
+        db.query("DELETE FROM tortenetek WHERE id=?",[id],(err)=>{
             if(err) throw err;
             res.json({message:"Történet törölve!"});
         });
