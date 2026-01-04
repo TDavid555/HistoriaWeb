@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2025. Nov 23. 14:00
+-- Létrehozás ideje: 2026. Jan 04. 21:44
 -- Kiszolgáló verziója: 10.4.28-MariaDB
 -- PHP verzió: 8.2.4
 
@@ -32,7 +32,7 @@ CREATE TABLE `fiokok` (
   `felhasznalonev` varchar(20) NOT NULL,
   `email` varchar(30) NOT NULL,
   `jelszo` varchar(20) NOT NULL,
-  `kituntetes` varchar(20) NOT NULL DEFAULT 'kezdő'
+  `kituntetes` varchar(20) DEFAULT 'kezdő'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
 
 -- --------------------------------------------------------
@@ -47,6 +47,17 @@ CREATE TABLE `hozzaszolasok` (
   `datum` datetime NOT NULL DEFAULT current_timestamp(),
   `tortenet_id` int(11) NOT NULL,
   `fiok_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `likes`
+--
+
+CREATE TABLE `likes` (
+  `fiok_id` int(11) NOT NULL,
+  `tortenet_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
 
 -- --------------------------------------------------------
@@ -3239,7 +3250,6 @@ CREATE TABLE `tortenetek` (
   `tortenet` varchar(4000) NOT NULL,
   `keletkezes_datum` datetime NOT NULL DEFAULT current_timestamp(),
   `tortenet_datum` datetime NOT NULL,
-  `likes` int(11) DEFAULT 0,
   `kep_url` varchar(20) DEFAULT NULL,
   `fiok_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
@@ -3251,7 +3261,6 @@ CREATE TABLE `tortenetek` (
 --
 
 CREATE TABLE `tortenet_telepules` (
-  `id` int(11) NOT NULL,
   `tortenet_id` int(11) NOT NULL,
   `telepules_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
@@ -3275,6 +3284,13 @@ ALTER TABLE `hozzaszolasok`
   ADD KEY `fiok_id` (`fiok_id`);
 
 --
+-- A tábla indexei `likes`
+--
+ALTER TABLE `likes`
+  ADD PRIMARY KEY (`fiok_id`,`tortenet_id`),
+  ADD KEY `tortenet_id` (`tortenet_id`);
+
+--
 -- A tábla indexei `telepulesek`
 --
 ALTER TABLE `telepulesek`
@@ -3291,7 +3307,7 @@ ALTER TABLE `tortenetek`
 -- A tábla indexei `tortenet_telepules`
 --
 ALTER TABLE `tortenet_telepules`
-  ADD PRIMARY KEY (`id`),
+  ADD PRIMARY KEY (`tortenet_id`,`telepules_id`),
   ADD KEY `tortenet_id` (`tortenet_id`),
   ADD KEY `telepules_id` (`telepules_id`);
 
@@ -3324,12 +3340,6 @@ ALTER TABLE `tortenetek`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT a táblához `tortenet_telepules`
---
-ALTER TABLE `tortenet_telepules`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- Megkötések a kiírt táblákhoz
 --
 
@@ -3339,6 +3349,13 @@ ALTER TABLE `tortenet_telepules`
 ALTER TABLE `hozzaszolasok`
   ADD CONSTRAINT `hozzaszolasok_ibfk_1` FOREIGN KEY (`tortenet_id`) REFERENCES `tortenetek` (`id`),
   ADD CONSTRAINT `hozzaszolasok_ibfk_2` FOREIGN KEY (`fiok_id`) REFERENCES `fiokok` (`id`);
+
+--
+-- Megkötések a táblához `likes`
+--
+ALTER TABLE `likes`
+  ADD CONSTRAINT `likes_ibfk_1` FOREIGN KEY (`fiok_id`) REFERENCES `fiokok` (`id`),
+  ADD CONSTRAINT `likes_ibfk_2` FOREIGN KEY (`tortenet_id`) REFERENCES `tortenetek` (`id`);
 
 --
 -- Megkötések a táblához `tortenetek`
