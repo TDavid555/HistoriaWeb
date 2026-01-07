@@ -3,7 +3,8 @@
 		"_postman_id": "a501abe0-daee-423d-a566-e0fc7bb4b416",
 		"name": "historiaweb",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "43026579"
+		"_exporter_id": "51294369",
+		"_collection_link": "https://azok88.postman.co/workspace/Azok-Workspace~32065529-13b5-4aff-8f5d-963c820048a1/collection/43026579-a501abe0-daee-423d-a566-e0fc7bb4b416?action=share&source=collection_link&creator=51294369"
 	},
 	"item": [
 		{
@@ -21,6 +22,283 @@
 					"path": [
 						"api",
 						"tortenetek"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "tortenetek_telepulesenkent",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"telepules\":\"Fehérgyarmat\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/tortenet_telepules",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"tortenet_telepules"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "bejelentkezes",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"felhasznalonev\":\"TesztElek\",\r\n    \"jelszo\":\"TesztElek1233\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/fiokok",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"fiokok"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "terkephez_telepulesek",
+			"request": {
+				"auth": {
+					"type": "inherit"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/terkep",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"terkep"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "legjobban_kedvelt_tortenetek",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/tortenetek/likes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"tortenetek",
+						"likes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "felhasznalonev_keresese_ellenorzeshez",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/felhasznalonev/TesztElek",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"felhasznalonev",
+						"TesztElek"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "tortenetek_lekerese_fiok_id_alapjan",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/tortenetek/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"tortenetek",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "tortenetek_lekerese_telepules_alapjan",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/tortenet/Fehérgyarmat",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"tortenet",
+						"Fehérgyarmat"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "tortenet_lekerese_szerkeszteshez",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/tortenetek/1/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"tortenetek",
+						"1",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "fiok_lekerese_id_alapjan",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/fiokok/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"fiokok",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "tortenet_lekerese_id_alapjan",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/tortenet/telepules/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"tortenet",
+						"telepules",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "megyek_lekerese",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/megyek",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"megyek"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "telepulesek_lekerese_megye_alapjan",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/telepulesek/Szabolcs-Szatmár-Bereg",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"telepulesek",
+						"Szabolcs-Szatmár-Bereg"
 					]
 				}
 			},
@@ -88,7 +366,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"felhasznalonev\":\"TesztElek\",\r\n    \"jelszo\":\"TesztElek123\",\r\n    \"email\":\"elek@teszt.com\"\r\n}",
+					"raw": "{\r\n    \"felhasznalonev\":\"TesztElek2\",\r\n    \"jelszo\":\"TesztElek123\",\r\n    \"email\":\"elek@teszt.com\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -105,6 +383,237 @@
 					"path": [
 						"api",
 						"fiokok"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "tortenet_letrehozas",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"cim\":\"Teszt tortenet\",\r\n    \"tortenet\":\"Ez egy teszt történet.\",\r\n    \"tortenet_datum\":\"2025.12.15\",\r\n    \"kep_url\":\"\",\r\n    \"megyek\":\r\n    {\r\n        \"Szabolcs-Szatmár-Bereg\":[\"Fehérgyarmat\"]\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/tortenetek/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"tortenetek",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "like_hozzadas",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/like/2/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"like",
+						"2",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "hozzaszolas_letrehozzasa",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"hozzaszolas\":\"Nagyon jó történet\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/hozzaszolas/2/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"hozzaszolas",
+						"2",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "fiok_frissites",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"felhasznalonev\": \"TesztElek\",\r\n    \"email\": \"elek@teszt.com\",\r\n    \"jelszo\": \"TesztElek1233\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/fiokok/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"fiokok",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "tortenet_frissites",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"cim\":\"Karácsonyi vásár\",\r\n    \"tortenet\":\"Elmentünk a vásárba.\",\r\n    \"tortenet_datum\":\"2025.12.15\",\r\n    \"kep_url\":\"\",\r\n    \"megyek\":\r\n    {\r\n        \"Szabolcs-Szatmár-Bereg\":[\"Mátészalka\"],\r\n        \"Hajdú-Bihar\":[\"Debrecen\"]\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/tortenetek/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"tortenetek",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "fiok_torles",
+			"request": {
+				"auth": {
+					"type": "inherit"
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/fiokok/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"fiokok",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "tortenet_torles",
+			"request": {
+				"auth": {
+					"type": "inherit"
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/tortenetek/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"tortenetek",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "like_visszavonas",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/like/3/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"like",
+						"3",
+						"1"
 					]
 				}
 			},
