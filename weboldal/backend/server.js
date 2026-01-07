@@ -22,13 +22,20 @@ const db = mysql.createConnection({
 
 db.connect(err => {
     if (err) throw err;
-    console.log("Sikeeer!");
+    console.log("MySQL kapcsolódva!");
 });
 
 //Kiolvasások
 
+app.get("/api/tortenetek/likes", (req, res) => {
+    db.query("SELECT tortenetek.id, cim, tortenet, keletkezes_datum, tortenet_datum_kezdet,tortenet_datum_vege, kep_url, tortenetek.fiok_id, COUNT(likes.tortenet_id) AS likes,telepules FROM tortenetek LEFT JOIN likes ON likes.tortenet_id=id JOIN tortenet_telepules ON tortenet_telepules.tortenet_id=tortenetek.id JOIN telepulesek ON telepules_id=telepulesek.id GROUP BY tortenetek.id ORDER BY likes DESC LIMIT 10", (err, results) => {
+        if (err) throw err;
+        res.json(results);
+    });
+});
+
 app.get("/api/tortenetek", (req, res) => {
-    db.query("SELECT id, cim, tortenet, keletkezes_datum, tortenet_datum, kep_url, tortenetek.fiok_id, COUNT(tortenet_id) AS likes FROM tortenetek LEFT JOIN likes ON tortenet_id=id GROUP BY id ORDER BY keletkezes_datum", (err, results) => {
+    db.query("SELECT tortenetek.id, cim, tortenet, keletkezes_datum, tortenet_datum_kezdet,tortenet_datum_vege, kep_url, tortenetek.fiok_id,telepules FROM tortenetek JOIN tortenet_telepules ON tortenet_telepules.tortenet_id=tortenetek.id JOIN telepulesek ON telepules_id=telepulesek.id GROUP BY tortenetek.id ORDER BY keletkezes_datum DESC LIMIT 10", (err, results) => {
         if (err) throw err;
         res.json(results);
     });
@@ -49,8 +56,8 @@ app.get("/api/fiokok", (req, res) => {
     });
 });
 
-app.get("/api/felhasznalonev", (req, res) => {
-    const{felhasznalonev} = req.query;
+app.get("/api/felhasznalonev/:felhasznalonev", (req, res) => {
+    const felhasznalonev = req.params.felhasznalonev;
     db.query("SELECT * FROM fiokok WHERE felhasznalonev=?;",[felhasznalonev], (err, results) => {
         if (err) throw err;
         res.json(results);
@@ -96,7 +103,22 @@ app.get("/api/tortenet/telepules/:id",(req,res)=>{
         if(err) throw err;
         res.json(results[0]);
     });
-})
+});
+
+app.get("/api/megyek",(req,res)=>{
+    db.query("SELECT DISTINCT megye FROM telepulesek ORDER BY megye",(err,results)=>{
+        if(err) throw err;
+        res.json(results);
+    });
+});
+
+app.get("/api/telepulesek/:megye",(req,res)=>{
+    const megye =`%${req.params.megye}%`;
+    db.query("SELECT telepules FROM telepulesek WHERE megye LIKE ? ORDER BY telepules",[megye],(err,results)=>{
+        if(err) throw err;
+        res.json(results);
+    });
+});
 
 //Feltöltések
 
@@ -110,20 +132,19 @@ app.post("/api/fiokok", (req, res) => {
 
 app.post("/api/tortenetek/:id", (req, res) => {
     const id=req.params.id;
-    const{cim,tortenet,tortenet_datum,kep_url,megyek} = req.body;
-    db.query("INSERT INTO tortenetek(cim,tortenet,tortenet_datum,kep_url,fiok_id) VALUES (?, ?, ?, ?, ?)", [cim, tortenet, tortenet_datum,kep_url,id], (err, results) => {
+    const{cim,tortenet,tortenet_datum_kezdet,tortenet_datum_vege,kep_url,telepulesek} = req.body;
+    db.query("INSERT INTO tortenetek(cim,tortenet,tortenet_datum_kezdet,tortenet_datum_vege,kep_url,fiok_id) VALUES (?, ?, ?, ?, ?, ?)", [cim, tortenet, tortenet_datum_kezdet,tortenet_datum_vege,kep_url,id], (err, results) => {
         if (err) throw err;
-        for(var i in megyek)
+        for(var i in telepulesek)
         {
-            megyek[i].forEach(j => 
-            {
+            telepulesek[i].forEach(j => {
                 db.query("INSERT INTO tortenet_telepules(tortenet_id,telepules_id) VALUES(?,(SELECT id FROM telepulesek WHERE telepules=? AND megye=?))",[results.insertId,j,i],(err)=>
                 {
                     if(err) throw err;
                 });       
             });
         }
-        res.json({id: results.insertId, cim, tortenet, tortenet_datum, kep_url, fiok_id:id, megyek});
+        res.json({id: results.insertId, cim, tortenet, tortenet_datum_kezdet,tortenet_datum_vege, kep_url, fiok_id:id, telepulesek});
     });
 });
 
@@ -159,15 +180,15 @@ app.put("/api/fiokok/:id", (req, res) => {
 
 app.put("/api/tortenetek/:id", (req, res) => {
     const id=req.params.id;
-    const{cim, tortenet, tortenet_datum,kep_url,megyek} = req.body;
+    const{cim, tortenet, tortenet_datum,kep_url,telepulesek} = req.body;
     db.query("UPDATE tortenetek SET cim=?,tortenet=?,tortenet_datum=?,kep_url=? WHERE id=?", [cim, tortenet, tortenet_datum,kep_url,id], (err) => {
         if (err) throw err;
         db.query("DELETE FROM tortenet_telepules WHERE tortenet_id=?",[id],(err)=>
         {
             if(err) throw err;
-            for(var i in megyek)
+            for(var i in telepulesek)
             {
-                megyek[i].forEach(j => 
+                telepulesek[i].forEach(j => 
                 {
                     db.query("INSERT INTO tortenet_telepules(tortenet_id,telepules_id)VALUES(?,(SELECT id FROM telepulesek WHERE telepules=? AND megye=?))",[id,j,i],(err)=>
                     {
