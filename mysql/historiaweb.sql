@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2026. Jan 07. 23:30
+-- Létrehozás ideje: 2026. Jan 11. 22:20
 -- Kiszolgáló verziója: 10.4.28-MariaDB
 -- PHP verzió: 8.2.4
 
@@ -3251,7 +3251,7 @@ CREATE TABLE `tortenetek` (
   `keletkezes_datum` datetime NOT NULL DEFAULT current_timestamp(),
   `tortenet_datum_kezdet` datetime NOT NULL,
   `tortenet_datum_vege` datetime NOT NULL,
-  `kep_url` varchar(20) DEFAULT NULL,
+  `kep_url` varchar(100) DEFAULT NULL,
   `fiok_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
 
