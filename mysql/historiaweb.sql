@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2026. Jan 11. 22:20
+-- Létrehozás ideje: 2026. Feb 03. 23:22
 -- Kiszolgáló verziója: 10.4.28-MariaDB
 -- PHP verzió: 8.2.4
 
@@ -56,9 +56,98 @@ CREATE TABLE `hozzaszolasok` (
 --
 
 CREATE TABLE `likes` (
-  `fiok_id` int(11) NOT NULL,
-  `tortenet_id` int(11) NOT NULL
+  `tortenet_id` int(11) DEFAULT NULL,
+  `fiok_id` int(11) DEFAULT NULL,
+  `tetszik` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+
+--
+-- Eseményindítók `likes`
+--
+DELIMITER $$
+CREATE TRIGGER `kituntetes_delete` AFTER DELETE ON `likes` FOR EACH ROW BEGIN
+    DECLARE osszes_like INT;
+    DECLARE szerzo_id INT;
+
+    -- 1. Megkeressük, ki a szerzője annak a történetnek, amit most lájkoltak
+    SELECT fiok_id INTO szerzo_id FROM tortenetek WHERE id = OLD.tortenet_id;
+
+    -- 2. Összeszámoljuk a szerző összes történetére érkezett összes LIKE-ot
+    -- (Csak azokat, ahol tetszik = 1)
+    SELECT COUNT(*) INTO osszes_like 
+    FROM likes
+    JOIN tortenetek ON likes.tortenet_id = tortenetek.id
+    WHERE tortenetek.fiok_id = szerzo_id AND likes.tetszik = 1;
+
+    -- 3. Frissítjük a kitüntetést a ponthatárok alapján
+    UPDATE fiokok 
+    SET kituntetes = CASE 
+    	WHEN osszes_like >= 100 THEN 'élő legenda'
+        WHEN osszes_like >= 100 THEN 'krónikás'
+        WHEN osszes_like >= 60  THEN 'történetmesélő'
+        WHEN osszes_like >= 20  THEN 'tollforgató'
+        ELSE 'kezdő'
+    END
+    WHERE id = szerzo_id;
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `kituntetes_insert` AFTER INSERT ON `likes` FOR EACH ROW BEGIN
+    DECLARE osszes_like INT;
+    DECLARE szerzo_id INT;
+
+    -- 1. Megkeressük, ki a szerzője annak a történetnek, amit most lájkoltak
+    SELECT fiok_id INTO szerzo_id FROM tortenetek WHERE id = NEW.tortenet_id;
+
+    -- 2. Összeszámoljuk a szerző összes történetére érkezett összes LIKE-ot
+    -- (Csak azokat, ahol tetszik = 1)
+    SELECT COUNT(*) INTO osszes_like 
+    FROM likes
+    JOIN tortenetek ON likes.tortenet_id = tortenetek.id
+    WHERE tortenetek.fiok_id = szerzo_id AND likes.tetszik = 1;
+
+    -- 3. Frissítjük a kitüntetést a ponthatárok alapján
+    UPDATE fiokok 
+    SET kituntetes = CASE 
+    	WHEN osszes_like >= 100 THEN 'élő legenda'
+        WHEN osszes_like >= 100 THEN 'krónikás'
+        WHEN osszes_like >= 60  THEN 'történetmesélő'
+        WHEN osszes_like >= 20  THEN 'tollforgató'
+        ELSE 'kezdő'
+    END
+    WHERE id = szerzo_id;
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `kituntetes_update` AFTER UPDATE ON `likes` FOR EACH ROW BEGIN
+    DECLARE osszes_like INT;
+    DECLARE szerzo_id INT;
+
+    -- 1. Megkeressük, ki a szerzője annak a történetnek, amit most lájkoltak
+    SELECT fiok_id INTO szerzo_id FROM tortenetek WHERE id = NEW.tortenet_id;
+
+    -- 2. Összeszámoljuk a szerző összes történetére érkezett összes LIKE-ot
+    -- (Csak azokat, ahol tetszik = 1)
+    SELECT COUNT(*) INTO osszes_like 
+    FROM likes
+    JOIN tortenetek ON likes.tortenet_id = tortenetek.id
+    WHERE tortenetek.fiok_id = szerzo_id AND likes.tetszik = 1;
+
+    -- 3. Frissítjük a kitüntetést a ponthatárok alapján
+    UPDATE fiokok 
+    SET kituntetes = CASE 
+    	WHEN osszes_like >= 100 THEN 'élő legenda'
+        WHEN osszes_like >= 100 THEN 'krónikás'
+        WHEN osszes_like >= 60  THEN 'történetmesélő'
+        WHEN osszes_like >= 20  THEN 'tollforgató'
+        ELSE 'kezdő'
+    END
+    WHERE id = szerzo_id;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -3241,12 +3330,34 @@ INSERT INTO `telepulesek` (`id`, `telepules`, `latitude`, `longitude`, `megye`) 
 -- --------------------------------------------------------
 
 --
+-- A nézet helyettes szerkezete `tortenet`
+-- (Lásd alább az aktuális nézetet)
+--
+CREATE TABLE `tortenet` (
+`id` int(11)
+,`keszito` varchar(20)
+,`cim` varchar(100)
+,`tortenet` varchar(4000)
+,`keletkezes_datum` datetime
+,`tortenet_datum_kezdet` datetime
+,`tortenet_datum_vege` datetime
+,`likes` bigint(21)
+,`dislikes` bigint(21)
+,`telepulesek` mediumtext
+,`megyek` mediumtext
+,`kep_url` varchar(100)
+,`hozzaszolasok` mediumtext
+);
+
+-- --------------------------------------------------------
+
+--
 -- Tábla szerkezet ehhez a táblához `tortenetek`
 --
 
 CREATE TABLE `tortenetek` (
   `id` int(11) NOT NULL,
-  `cim` varchar(20) NOT NULL,
+  `cim` varchar(100) NOT NULL,
   `tortenet` varchar(4000) NOT NULL,
   `keletkezes_datum` datetime NOT NULL DEFAULT current_timestamp(),
   `tortenet_datum_kezdet` datetime NOT NULL,
@@ -3265,6 +3376,15 @@ CREATE TABLE `tortenet_telepules` (
   `tortenet_id` int(11) NOT NULL,
   `telepules_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Nézet szerkezete `tortenet`
+--
+DROP TABLE IF EXISTS `tortenet`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `tortenet`  AS   (select `tortenetek`.`id` AS `id`,`fiokok`.`felhasznalonev` AS `keszito`,`tortenetek`.`cim` AS `cim`,`tortenetek`.`tortenet` AS `tortenet`,`tortenetek`.`keletkezes_datum` AS `keletkezes_datum`,`tortenetek`.`tortenet_datum_kezdet` AS `tortenet_datum_kezdet`,`tortenetek`.`tortenet_datum_vege` AS `tortenet_datum_vege`,count(distinct case when `likes`.`tetszik` = 1 then `likes`.`fiok_id` end) AS `likes`,count(distinct case when `likes`.`tetszik` = 0 then `likes`.`fiok_id` end) AS `dislikes`,group_concat(distinct `telepulesek`.`telepules` order by `telepulesek`.`telepules` ASC separator '\n') AS `telepulesek`,group_concat(distinct `telepulesek`.`megye` order by `telepulesek`.`megye` ASC separator '\n') AS `megyek`,`tortenetek`.`kep_url` AS `kep_url`,group_concat(distinct concat(`fiok_hozzaszolas`.`felhasznalonev`,':',`hozzaszolasok`.`hozzaszolas`) order by `fiok_hozzaszolas`.`felhasznalonev` ASC separator '\n') AS `hozzaszolasok` from ((((((`fiokok` join `tortenetek` on(`fiokok`.`id` = `tortenetek`.`fiok_id`)) join `tortenet_telepules` on(`tortenetek`.`id` = `tortenet_telepules`.`tortenet_id`)) join `telepulesek` on(`tortenet_telepules`.`telepules_id` = `telepulesek`.`id`)) left join `hozzaszolasok` on(`tortenetek`.`id` = `hozzaszolasok`.`tortenet_id`)) left join `fiokok` `fiok_hozzaszolas` on(`hozzaszolasok`.`fiok_id` = `fiok_hozzaszolas`.`id`)) left join `likes` on(`likes`.`tortenet_id` = `tortenetek`.`id`)) group by `tortenetek`.`id`)  ;
 
 --
 -- Indexek a kiírt táblákhoz
@@ -3288,8 +3408,8 @@ ALTER TABLE `hozzaszolasok`
 -- A tábla indexei `likes`
 --
 ALTER TABLE `likes`
-  ADD PRIMARY KEY (`fiok_id`,`tortenet_id`),
-  ADD KEY `tortenet_id` (`tortenet_id`);
+  ADD KEY `tortenet_id` (`tortenet_id`),
+  ADD KEY `fiok_id` (`fiok_id`);
 
 --
 -- A tábla indexei `telepulesek`
@@ -3355,8 +3475,8 @@ ALTER TABLE `hozzaszolasok`
 -- Megkötések a táblához `likes`
 --
 ALTER TABLE `likes`
-  ADD CONSTRAINT `likes_ibfk_1` FOREIGN KEY (`fiok_id`) REFERENCES `fiokok` (`id`),
-  ADD CONSTRAINT `likes_ibfk_2` FOREIGN KEY (`tortenet_id`) REFERENCES `tortenetek` (`id`);
+  ADD CONSTRAINT `likes_ibfk_1` FOREIGN KEY (`tortenet_id`) REFERENCES `tortenetek` (`id`),
+  ADD CONSTRAINT `likes_ibfk_2` FOREIGN KEY (`fiok_id`) REFERENCES `fiokok` (`id`);
 
 --
 -- Megkötések a táblához `tortenetek`
