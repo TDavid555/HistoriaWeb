@@ -1,0 +1,162 @@
+-- ===================================
+-- DEMO ADATOK - HistoriaWeb
+-- ===================================
+
+-- 1. FELHASZNÁLÓK (5 db)
+-- ===================================
+
+INSERT INTO `fiokok` (`felhasznalonev`, `email`, `jelszo`, `kituntetes`) VALUES
+('historia_fan', 'historia@example.com', 'jelszo123', 'kezdő'),
+('tortenelem_mester', 'tortenelem@example.com', 'password123', 'tollforgató'),
+('magyartortenelem', 'magyar@example.com', 'pass1234', 'történetmesélő'),
+('vilagtortenelem', 'vilag@example.com', 'jelszo456', 'kezdő'),
+('kozepkor_rajongo', 'kozepkor@example.com', 'medieval123', 'kezdő');
+
+-- ===================================
+-- 2. TÖRTÉNETEK (10 db érdekes történelmi esemény)
+-- ===================================
+
+-- Történet 1: Mohácsi csata
+INSERT INTO `tortenetek` (`cim`, `tortenet`, `tortenet_datum_kezdet`, `tortenet_datum_vege`, `kep_url`, `fiok_id`) VALUES
+('A mohácsi csata', 
+'1526. augusztus 29-én zajlott le a mohácsi csata, amely megváltoztatta Magyarország történelmét. II. Lajos király serege szembenézett az Oszmán Birodalom hatalmas hadseregével. A magyar csapatok vereséget szenvedtek, maga a király is életét vesztette a csatában. Ez az esemény megalapozta a másfél évszázados török hódoltságot Magyarországon.', 
+'1526-08-29 00:00:00', '1526-08-29 23:59:59', 
+'https://upload.wikimedia.org/wikipedia/commons/7/7d/Than_M%C3%B3r_Moh%C3%A1csi_csata.jpg', 
+1);
+
+-- Történet 2: Hunyadi János
+INSERT INTO `tortenetek` (`cim`, `tortenet`, `tortenet_datum_kezdet`, `tortenet_datum_vege`, `kep_url`, `fiok_id`) VALUES
+('Hunyadi János nándorfehérvári győzelme', 
+'1456 júliusában Hunyadi János vezetésével a magyar sereg nagyszerű győzelmet aratott a nándorfehérvári ostromnál. Az oszmán hadsereg kénytelen volt visszavonulni, és ez több mint fél évszázadra megállította a török terjeszkedést Európa szívében. A győzelem olyan fontos volt, hogy VI. Kálmán pápa elrendelte a déli harangszót, ami ma is emlékeztet erre az eseményre.', 
+'1456-07-04 00:00:00', '1456-07-22 23:59:59', 
+'https://upload.wikimedia.org/wikipedia/commons/4/40/Hunyady_J%C3%A1nos.jpg', 
+2);
+
+-- Történet 3: Szent István koronázása
+INSERT INTO `tortenetek` (`cim`, `tortenet`, `tortenet_datum_kezdet`, `tortenet_datum_vege`, `kep_url`, `fiok_id`) VALUES
+('Szent István koronázása', 
+'I. István, Géza fejedelem fia, 1000. december 25-én, karácsony napján koronázták meg Esztergomban. Ezzel megalapította a Magyar Királyságot és bevezette a kereszténységet. A koronázást követően megszervezte az egyházi és világi közigazgatást, püspökségeket alapított, és törvényekkel rendezete az ország életét. Halála után szentté avatták.', 
+'1000-12-25 00:00:00', '1000-12-25 23:59:59', 
+'https://upload.wikimedia.org/wikipedia/commons/1/14/St._Stephen%2C_Esztergom.jpg', 
+3);
+
+-- Történet 4: Aranybulla
+INSERT INTO `tortenetek` (`cim`, `tortenet`, `tortenet_datum_kezdet`, `tortenet_datum_vege`, `kep_url`, `fiok_id`) VALUES
+('Az Aranybulla kiadása', 
+'II. András király 1222-ben kiadta az Aranybullát, amely Magyarország első alkotmányos dokumentuma volt. A bulla rendezte a király és a nemesség viszonyát, korlátozta a királyi hatalmat, és garantálta a nemesek jogait. Az ellenállási záradék lehetővé tette a nemesség számára, hogy fellépjenek a király ellen, ha az megszegi az Aranybullában foglaltakat.', 
+'1222-01-01 00:00:00', '1222-12-31 23:59:59', 
+NULL, 
+1);
+
+-- Történet 5: Mátyás király
+INSERT INTO `tortenetek` (`cim`, `tortenet`, `tortenet_datum_kezdet`, `tortenet_datum_vege`, `kep_url`, `fiok_id`) VALUES
+('Mátyás király uralkodása', 
+'Hunyadi Mátyás 1458-1490 között uralkodott Magyarországon. Uralkodása alatt Magyarország reneszánsz központtá vált, megalapította a Bibliotheca Corvinianát, Európa egyik legnagyobb könyvtárát. Reformálta az államigazgatást, kiépítette a Fekete Sereget, és sikeresen védte az országot a török terjeszkedéstől. A nép körében igazságosságáról volt ismert.', 
+'1458-01-24 00:00:00', '1490-04-06 23:59:59', 
+'https://upload.wikimedia.org/wikipedia/commons/4/48/Andrea_Mantegna_-_King_Matthias_Corvinus_of_Hungary.jpg', 
+2);
+
+-- Történet 6: 1848-as forradalom
+INSERT INTO `tortenetek` (`cim`, `tortenet`, `tortenet_datum_kezdet`, `tortenet_datum_vege`, `kep_url`, `fiok_id`) VALUES
+('Az 1848-as márciusi ifjak', 
+'1848. március 15-én Pesten forradalmi megmozdulás kezdődött. A fiatalok a Nemzeti Múzeumnál gyülekeztek, ahol Petőfi Sándor felolvasta a Nemzeti dalt. Kinyomtatták a 12 pontot, amely tartalmazta a forradalom követeléseit: sajtószabadság, felelős kormány, nemzeti őrsereg felállítása. Az események hatására létrejött az első felelős magyar kormány gróf Batthyány Lajos vezetésével.', 
+'1848-03-15 00:00:00', '1848-03-15 23:59:59', 
+'https://upload.wikimedia.org/wikipedia/commons/3/37/Orsz%C3%A1ggy%C5%B1l%C3%A9s_megnyit%C3%A1sa_1848.jpg', 
+3);
+
+-- Történet 7: Trianon
+INSERT INTO `tortenetek` (`cim`, `tortenet`, `tortenet_datum_kezdet`, `tortenet_datum_vege`, `kep_url`, `fiok_id`) VALUES
+('A trianoni békeszerződés', 
+'1920. június 4-én írták alá Trianonban azt a békeszerződést, amely lezárta Magyarország részvételét az első világháborúban. A szerződés értelmében Magyarország területének kétharmadát és lakosságának 60%-át veszítette el. A történelmi Magyarország területéből új államok jöttek létre vagy meglévő országokhoz csatolták a területeket. Ez a nap a mai napig a magyar nemzet egyik legfájdalmasabb emléknapja.', 
+'1920-06-04 00:00:00', '1920-06-04 23:59:59', 
+NULL, 
+4);
+
+-- Történet 8: 1956-os forradalom
+INSERT INTO `tortenetek` (`cim`, `tortenet`, `tortenet_datum_kezdet`, `tortenet_datum_vege`, `kep_url`, `fiok_id`) VALUES
+('Az 1956-os forradalom Budapesten', 
+'1956. október 23-án diákok és értelmiségiek békés tüntetést szerveztek Budapesten, amely hamarosan országos szabadságharccá nőtte ki magát. A tüntetők a sztálinista diktatúra ellen és a szovjet megszállás ellen léptek fel. Október 23-án este a tüntetők ledöntötték Sztálin szobrát. November 4-én a szovjet csapatok brutálisan leverték a forradalmat, több ezer ember halt meg, ezrek menekültek külföldre.', 
+'1956-10-23 00:00:00', '1956-11-10 23:59:59', 
+'https://upload.wikimedia.org/wikipedia/commons/9/91/Hungarian_Revolution_of_1956_collage.jpg', 
+5);
+
+-- Történet 9: Budavár ostroma
+INSERT INTO `tortenetek` (`cim`, `tortenet`, `tortenet_datum_kezdet`, `tortenet_datum_vege`, `kep_url`, `fiok_id`) VALUES
+('Buda visszafoglalása a töröktől', 
+'1686-ban a Keresztény Liga csapatai hosszú ostrom után visszafoglalták Budát a töröktől. Az ostrom június 18-án kezdődött és szeptember 2-án fejeződött be. A vár falai súlyosan megrongálódtak, a város jelentős része elpusztult. Buda visszafoglalása fontos lépés volt Magyarország török uralom alóli felszabadításában, bár a háborúk még évtizedekig folytatódtak.', 
+'1686-06-18 00:00:00', '1686-09-02 23:59:59', 
+NULL, 
+1);
+
+-- Történet 10: Rendszerváltás
+INSERT INTO `tortenetek` (`cim`, `tortenet`, `tortenet_datum_kezdet`, `tortenet_datum_vege`, `kep_url`, `fiok_id`) VALUES
+('A magyar rendszerváltás', 
+'1989-1990-ben lezajlott Magyarország békés átmenete a szocialista diktatúrából a demokratikus berendezkedésbe. 1989. május 2-án lebontották a vasfüggönyt az osztrák határon, június 16-án újratemetés Nagy Imrét és társait, október 23-án kikiáltották a Magyar Köztársaságot. 1990 tavaszán megtartották az első szabad választásokat. Ez volt a kommunista rendszer békés leváltása.', 
+'1989-01-01 00:00:00', '1990-05-08 23:59:59', 
+'https://upload.wikimedia.org/wikipedia/commons/2/22/Nagy_Imre_%C3%BAjratemet%C3%A9se_fortepan_77275.jpg', 
+3);
+
+-- ===================================
+-- 3. TÖRTÉNET-TELEPÜLÉS KAPCSOLATOK
+-- ===================================
+
+-- Mohácsi csata -> Mohács
+INSERT INTO `tortenet_telepules` (`tortenet_id`, `telepules_id`) 
+SELECT 1, id FROM `telepulesek` WHERE `telepules` = 'Mohács';
+
+-- Nándorfehérvár -> Budapest (mint legközelebbi magyar település)
+INSERT INTO `tortenet_telepules` (`tortenet_id`, `telepules_id`) 
+SELECT 2, id FROM `telepulesek` WHERE `telepules` = 'Budapest';
+
+-- István koronázása -> Esztergom
+INSERT INTO `tortenet_telepules` (`tortenet_id`, `telepules_id`) 
+SELECT 3, id FROM `telepulesek` WHERE `telepules` = 'Esztergom';
+
+-- Arany Bulla -> Székesfehérvár (királyi székhely)
+INSERT INTO `tortenet_telepules` (`tortenet_id`, `telepules_id`) 
+SELECT 4, id FROM `telepulesek` WHERE `telepules` = 'Székesfehérvár';
+
+-- Mátyás király -> Budapest (Buda)
+INSERT INTO `tortenet_telepules` (`tortenet_id`, `telepules_id`) 
+SELECT 5, id FROM `telepulesek` WHERE `telepules` = 'Budapest';
+
+-- 1848 forradalom -> Budapest (Pest)
+INSERT INTO `tortenet_telepules` (`tortenet_id`, `telepules_id`) 
+SELECT 6, id FROM `telepulesek` WHERE `telepules` = 'Budapest';
+
+-- Trianon -> Budapest (mint főváros)
+INSERT INTO `tortenet_telepules` (`tortenet_id`, `telepules_id`) 
+SELECT 7, id FROM `telepulesek` WHERE `telepules` = 'Budapest';
+
+-- 1956 -> Budapest
+INSERT INTO `tortenet_telepules` (`tortenet_id`, `telepules_id`) 
+SELECT 8, id FROM `telepulesek` WHERE `telepules` = 'Budapest';
+
+-- Budavár ostroma -> Budapest (Buda)
+INSERT INTO `tortenet_telepules` (`tortenet_id`, `telepules_id`) 
+SELECT 9, id FROM `telepulesek` WHERE `telepules` = 'Budapest';
+
+-- Rendszerváltás -> Budapest
+INSERT INTO `tortenet_telepules` (`tortenet_id`, `telepules_id`) 
+SELECT 10, id FROM `telepulesek` WHERE `telepules` = 'Budapest';
+
+-- ===================================
+-- 4. PÁR LIKE (opcionális)
+-- ===================================
+
+-- Felhasználók like-olnak néhány történetet
+INSERT INTO `likes` (`fiok_id`, `tortenet_id`, `tetszik`) VALUES
+(1, 3, 1), -- historia_fan likes István koronázása
+(1, 6, 1), -- historia_fan likes 1848
+(2, 1, 1), -- tortenelem_mester likes Mohács
+(2, 5, 1), -- tortenelem_mester likes Mátyás
+(3, 6, 1), -- magyartortenelem likes 1848
+(3, 8, 1), -- magyartortenelem likes 1956
+(4, 2, 1), -- vilagtortenelem likes Nándorfehérvár
+(5, 5, 1), -- kozepkor_rajongo likes Mátyás
+(5, 9, 1); -- kozepkor_rajongo likes Budavár
+
+-- ===================================
+-- KÉSZ! 🎉
+-- ===================================
+-- Most már van 5 felhasználó és 10 történet!
