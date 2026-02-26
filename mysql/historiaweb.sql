@@ -3335,7 +3335,7 @@ INSERT INTO `telepulesek` (`id`, `telepules`, `latitude`, `longitude`, `megye`) 
 --
 CREATE TABLE `tortenet` (
 `id` int(11)
-,`keszito` varchar(20)
+,`szerzo` varchar(20)
 ,`cim` varchar(100)
 ,`tortenet` varchar(4000)
 ,`keletkezes_datum` datetime
@@ -3384,7 +3384,7 @@ CREATE TABLE `tortenet_telepules` (
 --
 DROP TABLE IF EXISTS `tortenet`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `tortenet`  AS   (select `tortenetek`.`id` AS `id`,`fiokok`.`felhasznalonev` AS `keszito`,`tortenetek`.`cim` AS `cim`,`tortenetek`.`tortenet` AS `tortenet`,`tortenetek`.`keletkezes_datum` AS `keletkezes_datum`,`tortenetek`.`tortenet_datum_kezdet` AS `tortenet_datum_kezdet`,`tortenetek`.`tortenet_datum_vege` AS `tortenet_datum_vege`,count(distinct case when `likes`.`tetszik` = 1 then `likes`.`fiok_id` end) AS `likes`,count(distinct case when `likes`.`tetszik` = 0 then `likes`.`fiok_id` end) AS `dislikes`,group_concat(distinct `telepulesek`.`telepules` order by `telepulesek`.`telepules` ASC separator '\n') AS `telepulesek`,group_concat(distinct `telepulesek`.`megye` order by `telepulesek`.`megye` ASC separator '\n') AS `megyek`,`tortenetek`.`kep_url` AS `kep_url`,group_concat(distinct concat(`fiok_hozzaszolas`.`felhasznalonev`,':',`hozzaszolasok`.`hozzaszolas`) order by `fiok_hozzaszolas`.`felhasznalonev` ASC separator '\n') AS `hozzaszolasok` from ((((((`fiokok` join `tortenetek` on(`fiokok`.`id` = `tortenetek`.`fiok_id`)) join `tortenet_telepules` on(`tortenetek`.`id` = `tortenet_telepules`.`tortenet_id`)) join `telepulesek` on(`tortenet_telepules`.`telepules_id` = `telepulesek`.`id`)) left join `hozzaszolasok` on(`tortenetek`.`id` = `hozzaszolasok`.`tortenet_id`)) left join `fiokok` `fiok_hozzaszolas` on(`hozzaszolasok`.`fiok_id` = `fiok_hozzaszolas`.`id`)) left join `likes` on(`likes`.`tortenet_id` = `tortenetek`.`id`)) group by `tortenetek`.`id`)  ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `tortenet`  AS   (select `tortenetek`.`id` AS `id`,`fiokok`.`felhasznalonev` AS `szerzo`,`tortenetek`.`cim` AS `cim`,`tortenetek`.`tortenet` AS `tortenet`,`tortenetek`.`keletkezes_datum` AS `keletkezes_datum`,`tortenetek`.`tortenet_datum_kezdet` AS `tortenet_datum_kezdet`,`tortenetek`.`tortenet_datum_vege` AS `tortenet_datum_vege`,count(distinct case when `likes`.`tetszik` = 1 then `likes`.`fiok_id` end) AS `likes`,count(distinct case when `likes`.`tetszik` = 0 then `likes`.`fiok_id` end) AS `dislikes`,group_concat(distinct `telepulesek`.`telepules` order by `telepulesek`.`telepules` ASC separator '\n') AS `telepulesek`,group_concat(distinct `telepulesek`.`megye` order by `telepulesek`.`megye` ASC separator '\n') AS `megyek`,`tortenetek`.`kep_url` AS `kep_url`,group_concat(distinct concat(`fiok_hozzaszolas`.`felhasznalonev`,':',`hozzaszolasok`.`hozzaszolas`) order by `fiok_hozzaszolas`.`felhasznalonev` ASC separator '\n') AS `hozzaszolasok` from ((((((`fiokok` join `tortenetek` on(`fiokok`.`id` = `tortenetek`.`fiok_id`)) join `tortenet_telepules` on(`tortenetek`.`id` = `tortenet_telepules`.`tortenet_id`)) join `telepulesek` on(`tortenet_telepules`.`telepules_id` = `telepulesek`.`id`)) left join `hozzaszolasok` on(`tortenetek`.`id` = `hozzaszolasok`.`tortenet_id`)) left join `fiokok` `fiok_hozzaszolas` on(`hozzaszolasok`.`fiok_id` = `fiok_hozzaszolas`.`id`)) left join `likes` on(`likes`.`tortenet_id` = `tortenetek`.`id`)) group by `tortenetek`.`id`)  ;
 
 --
 -- Indexek a kiírt táblákhoz
