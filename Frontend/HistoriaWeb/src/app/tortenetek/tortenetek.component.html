@@ -1,0 +1,14 @@
+<h1 class="text-center my-5">{{telepules}}</h1>
+<div class="container-fluid vh-100 my-3">
+    <div class="row g-3">
+        <div class="col-12 col-md-6 col-lg-4" *ngFor="let tortenet of tortenetek">
+            <div class="card" routerLink="/tortenetek/{{tortenet.telepules}}/{{tortenet.tortenet_id}}">
+                <div class="card-body">
+                    <h5 class="card-title">{{tortenet.cim}}</h5>
+                    <p class="card-text">{{tortenet.tortenet}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <app-footer></app-footer>
+</div>

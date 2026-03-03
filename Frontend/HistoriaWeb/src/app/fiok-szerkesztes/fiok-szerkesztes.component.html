@@ -1,0 +1,77 @@
+<div class="container-fluid">
+    <div class="row vh-100 align-items-center justify-content-center text-center">
+        <div class="col-12 col-md-6 col-lg-3 bg-white p-3 rounded">
+            <form autocomplete="off" (ngSubmit)="Ellenorzes()">
+                <h1>Fiók szerkesztés</h1>
+                <div class="input-group my-4">
+                    <span class="bi bi-person-fill fs-4 input-group-text"></span>
+                    <div class="form-floating">
+                        <input type="text" [(ngModel)]="fiok.felhasznalonev" name="felhasznalonev" class="form-control" placeholder="" id="felhasznalonev">
+                        <label for="felhasznalonev">Felhasználónév</label>
+                        <div class="invalid-tooltip">
+                            Hibás felhasználónév!
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group my-4">
+                    <span class="bi bi-at fs-4 input-group-text"></span>
+                    <div class="form-floating">
+                        <input type="email" [(ngModel)]="fiok.email" name="email" class="form-control" placeholder="" id="email">
+                        <label for="email">Email cím</label>
+                        <div class="invalid-tooltip">
+                            Nem megfelelő email cím formátum!
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group my-4">
+                    <span class="bi bi-lock-fill fs-4 input-group-text"></span>
+                    <div class="form-floating">
+                        <input type="password" [(ngModel)]="fiok.jelszo" name="jelszo" class="form-control" placeholder="" id="jelszo">
+                        <label for="jelszo">Jelszó</label>
+                        <div class="invalid-tooltip">
+                            Nem megfelelő jelszó formátum!
+                        </div>
+                    </div>
+                    <span class="bi bi-eye-fill fs-4 input-group-text" id="szem1" (click)="Mutat('jelszo','szem1')"></span>
+                </div>
+                <div class="input-group my-4">
+                    <span class="bi bi-lock-fill fs-4 input-group-text"></span>
+                    <div class="form-floating">
+                        <input type="password" [(ngModel)]="fiok.jelszo_i" name="jelszo_i" class="form-control" placeholder="" id="jelszo_i">
+                        <label for="jelszo_i">Jelszó ismét</label>
+                        <div class="invalid-tooltip">
+                            Nem megfelelő jelszó formátum!
+                        </div>
+                    </div>
+                    <span class="bi bi-eye-fill fs-4 input-group-text" id="szem2" (click)="Mutat('jelszo_i','szem2')"></span>
+                </div>
+                <div class="input-group my-4">
+                    <div class="form-floating">
+                        <select id="tortenetek" class="form-select" [disabled]="Van()" (change)="Valasztas($event.target.value)">
+                            <option *ngIf="tortenetek.length==0">Nincs még történeted</option>
+                            <option *ngFor="let tortenet of tortenetek" value="{{tortenet.id}}">{{tortenet.cim}}</option>
+                        </select>
+                        <label for="tortenetek">Történetek</label>
+                    </div>
+                    <button type="button" class="btn btn-primary" [disabled]="Van()" routerLink="/tortenet_szerkesztes/{{id}}">Szerkesztés</button>
+                </div>
+                <div class="form-floating my-4">
+                    <input type="text" readonly disabled [(ngModel)]="fiok.kituntetes" name="kituntetes" class="form-control" placeholder="" id="kituntetes">
+                    <label for="kituntetes">Kitüntetés</label>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <button type="button" class="btn btn-primary" routerLink="/">Vissza</button>
+                    </div>
+                    <div class="col-4">
+                        <button type="button" class="btn btn-danger" (click)="Torles()">Törlés</button>
+                    </div>
+                    <div class="col-4">
+                        <button type="submit" class="btn btn-success">Mentés</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <app-footer></app-footer>
+    </div>
+</div>

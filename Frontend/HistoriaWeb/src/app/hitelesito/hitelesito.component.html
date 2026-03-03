@@ -1,0 +1,95 @@
+<div class="container bg-white col-lg-6 col-12">
+    <div class="row vh-100">
+        <div class="col-12 align-self-center text-center">
+            <ul class="nav nav-pills justify-content-center rounded-pill bg-secondary p-1 mb-5">
+                <li class="nav-item">
+                    <button class="nav-link active rounded-pill px-5" (click)="Be()" id="be">Bejelentkezés</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link rounded-pill px-5" (click)="Ki()" id="ki">Regisztráció</button>
+                </li>
+            </ul>
+            <form autocomplete="off" class="mt-5" (ngSubmit)="Kuldes()" *ngIf="bejelentkezes">
+                <div class="input-group my-4">
+                    <span class="bi bi-person-fill fs-4 input-group-text"></span>
+                    <div class="form-floating">
+                        <input type="text" [(ngModel)]="fiok.felhasznalonev" name="felhasznalonev" class="form-control" placeholder="" id="felhasznalonev">
+                        <label for="felhasznalonev">Felhasználónév</label>
+                    </div>
+                </div>
+                <div class="input-group my-4">
+                    <span class="bi bi-lock-fill fs-4 input-group-text"></span>
+                    <div class="form-floating">
+                        <input type="password" [(ngModel)]="fiok.jelszo" name="jelszo" class="form-control" placeholder="" id="jelszo">
+                        <label for="jelszo">Jelszó</label>
+                        <div class="invalid-tooltip">
+                            Hibás Felhasználónév vagy jelszó!
+                        </div>
+                    </div>
+                    <span class="bi bi-eye-fill fs-4 input-group-text" id="szem1" (click)="Mutat('jelszo','szem1')"></span>
+                </div>
+                <div class="row my-4">
+                    <div class="col-6">
+                        <button type="button" class="btn btn-primary" routerLink="/">Vissza</button>
+                    </div>
+                    <div class="col-6">
+                        <button type="submit" class="btn btn-primary">Belépés</button>
+                    </div>
+                </div>
+            </form>
+            <form autocomplete="off" class="mt-5" (ngSubmit)="Ellenorzes();" *ngIf="!bejelentkezes">
+                <div class="input-group my-4">
+                    <span class="bi bi-person-fill fs-4 input-group-text"></span>
+                    <div class="form-floating">
+                        <input type="text" [(ngModel)]="fiok.felhasznalonev" name="felhasznalonev" class="form-control" placeholder="" id="felhasznalonev">
+                        <label for="felhasznalonev">Felhasználónév</label>
+                        <div class="invalid-tooltip">
+                            Hibás felhasználónév!
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group my-4">
+                    <span class="bi bi-at fs-4 input-group-text"></span>
+                    <div class="form-floating">
+                        <input type="email" [(ngModel)]="fiok.email" name="email" class="form-control" placeholder="" id="email">
+                        <label for="email">Email cím</label>
+                        <div class="invalid-tooltip">
+                            Nem megfelelő email cím formátum!
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group my-4">
+                    <span class="bi bi-lock-fill fs-4 input-group-text"></span>
+                    <div class="form-floating">
+                        <input type="password" [(ngModel)]="fiok.jelszo" name="jelszo" class="form-control" placeholder="" id="jelszo">
+                        <label for="jelszo">Jelszó</label>
+                        <div class="invalid-tooltip">
+                            Nem megfelelő jelszó formátum!
+                        </div>
+                    </div>
+                    <span class="bi bi-eye-fill fs-4 input-group-text" id="szem1" (click)="Mutat('jelszo','szem1')"></span>
+                </div>
+                <div class="input-group my-4">
+                    <span class="bi bi-lock-fill fs-4 input-group-text"></span>
+                    <div class="form-floating">
+                        <input type="password" [(ngModel)]="fiok.jelszo_i" name="jelszo_i" class="form-control" placeholder="" id="jelszo_i">
+                        <label for="jelszo_i">Jelszó ismét</label>
+                        <div class="invalid-tooltip">
+                            Nem megfelelő jelszó formátum!
+                        </div>
+                    </div>
+                    <span class="bi bi-eye-fill fs-4 input-group-text" id="szem2" (click)="Mutat('jelszo_i','szem2')"></span>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <button type="button" class="btn btn-primary" routerLink="/">Vissza</button>
+                    </div>
+                    <div class="col-6">
+                        <button type="submit" class="btn btn-primary">Regisztrálás</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<app-footer></app-footer>

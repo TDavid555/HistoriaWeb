@@ -1,0 +1,37 @@
+p{
+    text-align: justify;
+}
+
+.megye{
+    fill: white;
+    stroke-width: 1px;
+    stroke: black;
+}
+
+a path{
+    fill: red;
+    stroke:black;
+    stroke-width:1px;
+}
+a path:hover{
+    fill: white;
+}
+
+h1{
+    font-size: 350%;
+}
+
+.tortenet{
+    cursor: pointer;
+}
+
+.dislike{
+    transform:rotateY(180deg);
+}
+
+@media  screen and (max-width:800px) {
+    h1{
+        font-size: 250%;
+    }
+    
+}

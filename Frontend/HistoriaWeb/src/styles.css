@@ -1,0 +1,8 @@
+body{
+    background-color: #CCE2FF;
+    font-family: "Inknut Antiqua";
+}
+
+.bi-eye-fill,.bi-eye-slash-fill{
+    cursor: pointer;
+}

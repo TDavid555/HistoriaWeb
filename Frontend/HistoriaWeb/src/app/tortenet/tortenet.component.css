@@ -1,0 +1,17 @@
+.dislike{
+    transform:rotateY(180deg);
+    border-top-left-radius: 40%;
+    border-bottom-left-radius: 40%;
+}
+
+#like,#dislike{
+    font-size: 20px;
+}
+
+#hozzaszolas{
+    height: 200px;
+}
+
+#hozzaszolasok{
+    height: 600px;
+}

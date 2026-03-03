@@ -1,0 +1,79 @@
+<div class="container-fluid">
+    <div class="row vh-100 align-items-center justify-content-center text-center">
+        <div class="col-12 col-md-9 col-lg-6 bg-white p-3 rounded">
+            <form autocomplete="off" (submit)="Ellenorzes()">
+                <h1>Történet szerkesztése</h1>
+                <div class="row g-4">
+                    <div class="col-12 col-md-6">
+                        <div class="input-group">
+                            <ng-select [items]="megyek" id="megye" (open)="Valasztas('megye')" class="form-control is-valid" placeholder="Válasz megyét:" [(ngModel)]="valasztot_megyek" name="valasztot_megyek"(change)="Telepulesek()" [selectableGroup]="true" bindValue="megye" bindLabel="megye" [multiple]="true">
+                            </ng-select> 
+                            <div class="invalid-tooltip">
+                                Válasz megyét!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="input-group">
+                            <ng-select [items]="telepulesek" id="telepules" (open)="Valasztas('telepules')" class="form-control is-valid" placeholder="Válasz települést:" [(ngModel)]="tortenet.telepulesek" name="telepulesek" [selectableGroup]="true" bindValue="telepules" bindLabel="telepules" [multiple]="true">
+                            </ng-select>
+                            <div class="invalid-tooltip">
+                                Válasz települést!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-floating">
+                            <input class="form-control is-valid" id="tortenet_kezdet" [(ngModel)]="tortenet.tortenet_datum_kezdet" name="tortenet_datum_kezdet" type="date">
+                            <label for="tortenet_kezdet">Történet kezdő dátum</label>
+                            <div class="invalid-tooltip">
+                                Hibás dátum összeállítás!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-floating">
+                            <input class="form-control is-valid" id="tortenet_vege" [(ngModel)]="tortenet.tortenet_datum_vege" name="tortenet_datum_vege" type="date">
+                            <label for="tortenet_vege">Történet vége dátum</label>
+                            <div class="invalid-tooltip">
+                                Hibás dátum összeállítás!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-floating">
+                            <input type="text" id="cim" [(ngModel)]="tortenet.cim" name="cim" placeholder="" class="form-control is-valid">
+                            <label for="cim">Cím</label>
+                            <div class="invalid-tooltip">
+                                Nem megfelelő cím!
+                            </div>
+                        </div>
+                        <div class="form-floating my-3">
+                            <textarea class="form-control is-valid" [(ngModel)]="tortenet.tortenet" id="tortenet" placeholder="" name="tortenet"></textarea>
+                            <label for="tortenet">Történet</label>
+                            <div class="invalid-tooltip">
+                                Kötelező kitölteni!
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <input type="file" class="is-valid" id="kep_url" (cancel)="Nincs()" (progress)="Nincs()" (change)="Kivalasztas($event)" name="kep_url" accept="image/*">
+                            <div class="invalid-tooltip">
+                                Hibás fájl formátum!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <button type="button" class="btn btn-primary" routerLink="/">Vissza</button>
+                    </div>
+                    <div class="col-4">
+                        <button type="button" class="btn btn-danger" (click)="Torles()">Törlés</button>
+                    </div>
+                    <div class="col-4">
+                        <button type="submit" class="btn btn-success">Mentés</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <app-footer></app-footer>
+    </div>
+</div>

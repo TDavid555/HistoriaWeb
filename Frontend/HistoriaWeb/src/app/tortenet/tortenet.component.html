@@ -1,0 +1,49 @@
+<div class="container-fluid">
+  <div class="row p-5 gy-3">
+    <div class="col-12">
+      <h1 class="text-center">{{tortenet.cim}}</h1>
+      <div class="row text-center bg-white gy-3 my-5 p-3">
+        <div class="col-12 col-lg-3">Megyék: <br>{{tortenet.megyek}}</div>
+        <div class="col-12 col-lg-3">Települések: <br>{{tortenet.telepulesek}}</div>
+        <div class="col-12 col-lg-3">Szerző:<br>{{tortenet.szerzo}}</div>
+        <div class="col-12 col-lg-3">Történés időszaka: <br>{{tortenet.tortenet_datum_kezdet}}-{{tortenet.tortenet_datum_vege}}</div>
+      </div>
+      <div class="row bg-white p-3 gy-3">
+        <div class="col-12">
+          <p>{{tortenet.tortenet}}</p>
+        </div>
+        <div class="col-12 justify-content-center d-flex">
+          <img style="max-height: 720px;" class="img-fluid img-thumbnail" src="{{tortenet.kep_url}}">
+        </div>
+        <div class="col-12">
+          Keletkezett: {{tortenet.keletkezes_datum}}
+        </div>
+        <div class="col-12">
+          <button class="bi bi-hand-thumbs-up rounded-start-pill" id="like" (click)="Like()">{{tortenet.likes}}</button>
+          <button class="bi bi-hand-thumbs-down d-inline-block dislike" id="dislike" (click)="Dislike()">{{tortenet.dislikes}}</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <h3>Hozzászólások</h3>
+      <form (submit)="Kuldes()" class="my-3">
+        <div class="form-floating my-3">
+          <textarea class="form-control" id="hozzaszolas" [disabled]="Van()" [(ngModel)]="hozzaszolas" placeholder="" name="hozzaszolas"></textarea>
+          <label for="hozzaszolas">Hozzászólás</label>
+          <div class="invalid-tooltip">
+            Kötelező kitölteni!
+          </div>
+        </div>
+        <button class="btn btn-primary" [disabled]="Van()" type="submit">Küldés</button>
+      </form>
+      <div class="bg-white" id="hozzaszolasok">
+        <div *ngIf="tortenet.hozzaszolasok!=null">
+          <p *ngFor="let hozzaszolas of tortenet.hozzaszolasok.split('\n')">
+            {{hozzaszolas}}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>
