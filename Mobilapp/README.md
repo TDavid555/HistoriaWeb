@@ -1,50 +1,36 @@
-# Welcome to your Expo app 👋
+HistóriaWeb Mobilapp
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Indítás
 
-## Get started
+1. Node.js telepítése
 
-1. Install dependencies
+Töltsd le és telepítsd a Node.js-t innen: https://nodejs.org
+Válaszd az LTS verziót.
 
-   ```bash
-   npm install
-   ```
+2. Expo Go telepítése a telefonra
 
-2. Start the app
+Töltsd le az Expo Go alkalmazást a telefonodra:
 
-   ```bash
-   npx expo start
-   ```
+- Android: https://play.google.com/store/apps/details?id=host.exp.exponent
+- iOS: https://apps.apple.com/app/expo-go/id982107779
 
-In the output, you'll find options to open the app in a
+3. Csomagok telepítése
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+Nyiss egy parancssort (CMD) a projekt mappájában, majd lépj be a Mobilapp mappába:
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+    cd Mobilapp
 
-## Get a fresh project
+Ezután futtasd le:
 
-When you're ready, run:
+    npm install
 
-```bash
-npm run reset-project
-```
+Ez letölti a szükséges fájlokat.
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+4. Az alkalmazás indítása
 
-## Learn more
+    npx expo start --tunnel
 
-To learn more about developing your project with Expo, look at the following resources:
+5. Megnyitás a telefonon
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+A parancs lefutása után egy QR-kód jelenik meg a parancssorban.
+Olvasd be a QR-kódot az Expo Go alkalmazással (Android), vagy a telefon kamerájával (iOS).
