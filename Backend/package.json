@@ -12,11 +12,13 @@
   "description": "",
   "dependencies": {
     "body-parser": "^2.2.1",
+    "cloudflared": "^0.7.1",
     "cors": "^2.8.5",
+    "dotenv": "^17.3.1",
     "express": "^5.2.1",
     "express-fileupload": "^1.5.2",
-    "mysql2": "^3.15.3"
+    "mysql2": "^3.15.3",
+    "nodemailer": "^8.0.1"
   },
-  "devDependencies": {},
   "type": "commonjs"
 }

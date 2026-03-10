@@ -1,12 +1,14 @@
 //Csomagok behívása
+
 const {Validaciok}=require("./validaciok");
 const {Adatbazis_kapcsolat}=require("./adatbazis_kapcsolat");
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const expressFileupload=require("express-fileupload");
-const fs=require("fs");
-const{spawn}=require("child_process");
+const{Megosztas}=require("./megosztas");
+const{Email_kuldes}=require("./ellenorzo");
+
 //Szerver létrehozása
 
 const app = express();
@@ -15,6 +17,7 @@ app.use(bodyParser.json());
 app.use(expressFileupload());
 
 //Adatbázis kapcsolata létrehozása 
+
 const adatbazis_adatok={
     host: "localhost",
     user: "root",
@@ -38,7 +41,7 @@ const validaciok=new Validaciok();
 //Kiolvasások
 
 app.get("/api/tortenetek/likes", (req, res) => {
-    db.query("SELECT tortenetek.id, cim, tortenet, keletkezes_datum, tortenet_datum_kezdet,tortenet_datum_vege, kep_url, tortenetek.fiok_id, COUNT(DISTINCT CASE WHEN likes.tetszik=1 THEN likes.fiok_id END) AS likes,COUNT(DISTINCT CASE WHEN likes.tetszik=0 THEN likes.fiok_id END) AS dislikes,telepules FROM tortenetek LEFT JOIN likes ON likes.tortenet_id=id JOIN tortenet_telepules ON tortenet_telepules.tortenet_id=tortenetek.id JOIN telepulesek ON telepules_id=telepulesek.id GROUP BY tortenetek.id ORDER BY (COUNT(DISTINCT CASE WHEN likes.tetszik=1 THEN likes.fiok_id END)-COUNT(DISTINCT CASE WHEN likes.tetszik=0 THEN likes.fiok_id END)) DESC LIMIT 4", (err, results) => {
+    db.query("SELECT * from tortenet ORDER BY likes-dislikes DESC LIMIT 4", (err, results) => {
         if (err) throw err;
         res.json(results);
     });
@@ -60,22 +63,18 @@ app.get("/api/terkep",(req,res)=>{
 
 app.get("/api/fiokok", (req, res) => {
     const{felhasznalonev,jelszo} = req.query;
-    if(validaciok.Helyes_felhasznalonev(felhasznalonev) && validaciok.Helyes_jelszo(jelszo)){
-        db.query("SELECT * FROM fiokok WHERE felhasznalonev=? AND jelszo=?;",[felhasznalonev,jelszo], (err, results) => {
-            if (err) throw err;
-            res.json(results[0]);
-        });
-    }
+    db.query("SELECT * FROM fiokok WHERE felhasznalonev=? AND jelszo=?;",[felhasznalonev,jelszo], (err, results) => {
+        if (err) throw err;
+        res.json(results[0]);
+    });
 });
 
 app.get("/api/felhasznalonev/:felhasznalonev", (req, res) => {
     const felhasznalonev = req.params.felhasznalonev;
-    if(validaciok.Helyes_felhasznalonev(felhasznalonev)){
-        db.query("SELECT * FROM fiokok WHERE felhasznalonev=?;",[felhasznalonev], (err, results) => {
-            if (err) throw err;
-            res.json(results);
-        });
-    }
+    db.query("SELECT * FROM fiokok WHERE felhasznalonev=?;",[felhasznalonev], (err, results) => {
+        if (err) throw err;
+        res.json(results);
+    });
 });
 
 app.get("/api/tortenet/:telepules",(req,res)=>{
@@ -172,6 +171,13 @@ app.get("/api/like/:tortenet_id/:fiok_id",(req,res)=>{
     });
 });
 
+app.get("/api/rangsor",(req,res)=>{
+    db.query("SELECT szerzo,kituntetes,SUM(likes) AS likes FROM `tortenet` GROUP BY szerzo ORDER BY likes DESC LIMIT 10;",(err,results)=>{
+        if(err) throw err;
+        res.json(results);
+    });
+});
+
 //Feltöltések
 
 app.post("/api/fiokok", (req, res) => {
@@ -209,10 +215,6 @@ app.post("/api/tortenetek/:id", (req, res) => {
             res.json({id: results.insertId, cim:cim, tortenet:tortenet, tortenet_datum_kezdet:tortenet_datum_kezdet,tortenet_datum_vege:tortenet_datum_vege, kep_url:kep_url, fiok_id:id, telepulesek:telepulesek});
         });
     }
-    else{
-        console.log(req.body);
-        console.log(telepulesek);
-    }
 });
 
 app.post("/api/like",(req,res)=>{
@@ -232,6 +234,14 @@ app.post("/api/hozzaszolas",(req,res)=>{
             if(err) throw err;
             res.json({id:results.insertId,fiok_id:fiok_id,tortenet_id:tortenet_id,hozzaszolas});
         });
+    }
+});
+
+app.post("/api/ellenorzes",(req,res)=>{
+    const{email,kod}=req.body;
+    if(validaciok.Helyes_email(email)){
+        Email_kuldes(email,"Ellenőrző kód",`A kódod: ${kod}`);
+        res.json(req.body);
     }
 });
 
@@ -339,18 +349,20 @@ app.delete("/api/like/:fiok_id/:tortenet_id",(req,res)=>{
     }
 });
 
+app.delete("/api/hozzaszolas/:id",(req,res)=>{
+    const id=req.params.id;
+    if(validaciok.Helyes_id(id)){
+        db.query("DELETE FROM hozzaszolasok WHERE id=?",[id],(err)=>{
+            if(err) throw err;
+            res.json({message:"Hozzászólás törölve."});
+        });
+    }
+});
+
 //Szerver indítása
 
 const PORT = 3000;
-const public =spawn("cloudflared",["tunnel","--url",`http://localhost:${PORT}`]);
-public.stderr.on("data",(adat)=>{
-    const adatok=adat.toString();
-    const url = adatok.match(/https:\/\/[a-z0-9-]+\.trycloudflare\.com/);
-    if(url){    
-        console.log(url[0]);
-        fs.writeFileSync("../historiaweb-mobilapp/services/url.json",`{"url":"${url}"}`);
-    }
-});
 app.listen(PORT,() =>{
+    Megosztas(`http://localhost:${PORT}`);
     console.log(`Server running on http://localhost:${PORT}`);
 });
