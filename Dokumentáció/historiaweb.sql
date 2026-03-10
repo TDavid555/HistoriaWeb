@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2026. Feb 03. 23:22
+-- Létrehozás ideje: 2026. Már 10. 22:14
 -- Kiszolgáló verziója: 10.4.28-MariaDB
 -- PHP verzió: 8.2.4
 
@@ -30,10 +30,21 @@ SET time_zone = "+00:00";
 CREATE TABLE `fiokok` (
   `id` int(11) NOT NULL,
   `felhasznalonev` varchar(20) NOT NULL,
-  `email` varchar(50) NOT NULL,
-  `jelszo` varchar(255) NOT NULL,
+  `email` varchar(30) NOT NULL,
+  `jelszo` varchar(20) NOT NULL,
   `kituntetes` varchar(20) DEFAULT 'kezdő'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+
+--
+-- A tábla adatainak kiíratása `fiokok`
+--
+
+INSERT INTO `fiokok` (`id`, `felhasznalonev`, `email`, `jelszo`, `kituntetes`) VALUES
+(1, 'historia_fan', 'historia@example.com', 'Jelszo123@', 'kezdő'),
+(2, 'tortenelem_mester', 'tortenelem@example.com', 'password123', 'kezdő'),
+(3, 'magyartortenelem', 'magyar@example.com', 'pass1234', 'kezdő'),
+(4, 'vilagtortenelem', 'vilag@example.com', 'jelszo456', 'kezdő'),
+(5, 'kozepkor_rajongo', 'kozepkor@example.com', 'medieval123', 'kezdő');
 
 -- --------------------------------------------------------
 
@@ -60,6 +71,21 @@ CREATE TABLE `likes` (
   `fiok_id` int(11) DEFAULT NULL,
   `tetszik` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+
+--
+-- A tábla adatainak kiíratása `likes`
+--
+
+INSERT INTO `likes` (`tortenet_id`, `fiok_id`, `tetszik`) VALUES
+(3, 1, 1),
+(6, 1, 1),
+(1, 2, 1),
+(5, 2, 1),
+(6, 3, 1),
+(8, 3, 1),
+(2, 4, 1),
+(5, 5, 1),
+(9, 5, 1);
 
 --
 -- Eseményindítók `likes`
@@ -3336,16 +3362,17 @@ INSERT INTO `telepulesek` (`id`, `telepules`, `latitude`, `longitude`, `megye`) 
 CREATE TABLE `tortenet` (
 `id` int(11)
 ,`szerzo` varchar(20)
+,`kituntetes` varchar(20)
 ,`cim` varchar(100)
-,`tortenet` varchar(8000)
+,`tortenet` varchar(4000)
 ,`keletkezes_datum` datetime
 ,`tortenet_datum_kezdet` datetime
 ,`tortenet_datum_vege` datetime
-,`likes` bigint(21)
-,`dislikes` bigint(21)
 ,`telepulesek` mediumtext
 ,`megyek` mediumtext
 ,`kep_url` varchar(100)
+,`likes` bigint(21)
+,`dislikes` bigint(21)
 ,`hozzaszolasok` mediumtext
 );
 
@@ -3358,13 +3385,29 @@ CREATE TABLE `tortenet` (
 CREATE TABLE `tortenetek` (
   `id` int(11) NOT NULL,
   `cim` varchar(100) NOT NULL,
-  `tortenet` varchar(8000) NOT NULL,
+  `tortenet` varchar(4000) NOT NULL,
   `keletkezes_datum` datetime NOT NULL DEFAULT current_timestamp(),
   `tortenet_datum_kezdet` datetime NOT NULL,
   `tortenet_datum_vege` datetime NOT NULL,
   `kep_url` varchar(100) DEFAULT NULL,
   `fiok_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+
+--
+-- A tábla adatainak kiíratása `tortenetek`
+--
+
+INSERT INTO `tortenetek` (`id`, `cim`, `tortenet`, `keletkezes_datum`, `tortenet_datum_kezdet`, `tortenet_datum_vege`, `kep_url`, `fiok_id`) VALUES
+(1, 'A mohácsi csata', '1526. augusztus 29-én zajlott le a mohácsi csata, amely megváltoztatta Magyarország történelmét. II. Lajos király serege szembenézett az Oszmán Birodalom hatalmas hadseregével. A magyar csapatok vereséget szenvedtek, maga a király is életét vesztette a csatában. Ez az esemény megalapozta a másfél évszázados török hódoltságot Magyarországon.', '2026-02-25 23:34:02', '1526-08-29 00:00:00', '1526-08-29 23:59:59', 'https://upload.wikimedia.org/wikipedia/commons/7/7d/Than_M%C3%B3r_Moh%C3%A1csi_csata.jpg', 1),
+(2, 'Hunyadi János nándorfehérvári győzelme', '1456 júliusában Hunyadi János vezetésével a magyar sereg nagyszerű győzelmet aratott a nándorfehérvári ostromnál. Az oszmán hadsereg kénytelen volt visszavonulni, és ez több mint fél évszázadra megállította a török terjeszkedést Európa szívében. A győzelem olyan fontos volt, hogy VI. Kálmán pápa elrendelte a déli harangszót, ami ma is emlékeztet erre az eseményre.', '2026-02-25 23:34:02', '1456-07-04 00:00:00', '1456-07-22 23:59:59', 'https://upload.wikimedia.org/wikipedia/commons/4/40/Hunyady_J%C3%A1nos.jpg', 2),
+(3, 'Szent István koronázása', 'I. István, Géza fejedelem fia, 1000. december 25-én, karácsony napján koronázták meg Esztergomban. Ezzel megalapította a Magyar Királyságot és bevezette a kereszténységet. A koronázást követően megszervezte az egyházi és világi közigazgatást, püspökségeket alapított, és törvényekkel rendezete az ország életét. Halála után szentté avatták.', '2026-02-25 23:34:02', '1000-12-25 00:00:00', '1000-12-25 23:59:59', 'https://upload.wikimedia.org/wikipedia/commons/1/14/St._Stephen%2C_Esztergom.jpg', 3),
+(4, 'Az Aranybulla kiadása', 'II. András király 1222-ben kiadta az Aranybullát, amely Magyarország első alkotmányos dokumentuma volt. A bulla rendezte a király és a nemesség viszonyát, korlátozta a királyi hatalmat, és garantálta a nemesek jogait. Az ellenállási záradék lehetővé tette a nemesség számára, hogy fellépjenek a király ellen, ha az megszegi az Aranybullában foglaltakat.', '2026-02-25 23:34:02', '1222-01-01 00:00:00', '1222-12-31 23:59:59', NULL, 1),
+(5, 'Mátyás király uralkodása', 'Hunyadi Mátyás 1458-1490 között uralkodott Magyarországon. Uralkodása alatt Magyarország reneszánsz központtá vált, megalapította a Bibliotheca Corvinianát, Európa egyik legnagyobb könyvtárát. Reformálta az államigazgatást, kiépítette a Fekete Sereget, és sikeresen védte az országot a török terjeszkedéstől. A nép körében igazságosságáról volt ismert.', '2026-02-25 23:34:02', '1458-01-24 00:00:00', '1490-04-06 23:59:59', 'https://upload.wikimedia.org/wikipedia/commons/4/48/Andrea_Mantegna_-_King_Matthias_Corvinus_of_Hung', 2),
+(6, 'Az 1848-as márciusi ifjak', '1848. március 15-én Pesten forradalmi megmozdulás kezdődött. A fiatalok a Nemzeti Múzeumnál gyülekeztek, ahol Petőfi Sándor felolvasta a Nemzeti dalt. Kinyomtatták a 12 pontot, amely tartalmazta a forradalom követeléseit: sajtószabadság, felelős kormány, nemzeti őrsereg felállítása. Az események hatására létrejött az első felelős magyar kormány gróf Batthyány Lajos vezetésével.', '2026-02-25 23:34:02', '1848-03-15 00:00:00', '1848-03-15 23:59:59', 'https://upload.wikimedia.org/wikipedia/commons/3/37/Orsz%C3%A1ggy%C5%B1l%C3%A9s_megnyit%C3%A1sa_1848', 3),
+(7, 'A trianoni békeszerződés', '1920. június 4-én írták alá Trianonban azt a békeszerződést, amely lezárta Magyarország részvételét az első világháborúban. A szerződés értelmében Magyarország területének kétharmadát és lakosságának 60%-át veszítette el. A történelmi Magyarország területéből új államok jöttek létre vagy meglévő országokhoz csatolták a területeket. Ez a nap a mai napig a magyar nemzet egyik legfájdalmasabb emléknapja.', '2026-02-25 23:34:02', '1920-06-04 00:00:00', '1920-06-04 23:59:59', NULL, 4),
+(8, 'Az 1956-os forradalom Budapesten', '1956. október 23-án diákok és értelmiségiek békés tüntetést szerveztek Budapesten, amely hamarosan országos szabadságharccá nőtte ki magát. A tüntetők a sztálinista diktatúra ellen és a szovjet megszállás ellen léptek fel. Október 23-án este a tüntetők ledöntötték Sztálin szobrát. November 4-én a szovjet csapatok brutálisan leverték a forradalmat, több ezer ember halt meg, ezrek menekültek külföldre.', '2026-02-25 23:34:02', '1956-10-23 00:00:00', '1956-11-10 23:59:59', 'https://upload.wikimedia.org/wikipedia/commons/9/91/Hungarian_Revolution_of_1956_collage.jpg', 5),
+(9, 'Buda visszafoglalása a töröktől', '1686-ban a Keresztény Liga csapatai hosszú ostrom után visszafoglalták Budát a töröktől. Az ostrom június 18-án kezdődött és szeptember 2-án fejeződött be. A vár falai súlyosan megrongálódtak, a város jelentős része elpusztult. Buda visszafoglalása fontos lépés volt Magyarország török uralom alóli felszabadításában, bár a háborúk még évtizedekig folytatódtak.', '2026-02-25 23:34:02', '1686-06-18 00:00:00', '1686-09-02 23:59:59', NULL, 1),
+(10, 'A magyar rendszerváltás', '1989-1990-ben lezajlott Magyarország békés átmenete a szocialista diktatúrából a demokratikus berendezkedésbe. 1989. május 2-án lebontották a vasfüggönyt az osztrák határon, június 16-án újratemetés Nagy Imrét és társait, október 23-án kikiáltották a Magyar Köztársaságot. 1990 tavaszán megtartották az első szabad választásokat. Ez volt a kommunista rendszer békés leváltása.', '2026-02-25 23:34:02', '1989-01-01 00:00:00', '1990-05-08 23:59:59', 'https://upload.wikimedia.org/wikipedia/commons/2/22/Nagy_Imre_%C3%BAjratemet%C3%A9se_fortepan_77275.', 3);
 
 -- --------------------------------------------------------
 
@@ -3377,6 +3420,22 @@ CREATE TABLE `tortenet_telepules` (
   `telepules_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
 
+--
+-- A tábla adatainak kiíratása `tortenet_telepules`
+--
+
+INSERT INTO `tortenet_telepules` (`tortenet_id`, `telepules_id`) VALUES
+(1, 1746),
+(2, 394),
+(3, 721),
+(4, 2566),
+(5, 394),
+(6, 394),
+(7, 394),
+(8, 394),
+(9, 394),
+(10, 394);
+
 -- --------------------------------------------------------
 
 --
@@ -3384,7 +3443,7 @@ CREATE TABLE `tortenet_telepules` (
 --
 DROP TABLE IF EXISTS `tortenet`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `tortenet`  AS   (select `tortenetek`.`id` AS `id`,`fiokok`.`felhasznalonev` AS `szerzo`,`tortenetek`.`cim` AS `cim`,`tortenetek`.`tortenet` AS `tortenet`,`tortenetek`.`keletkezes_datum` AS `keletkezes_datum`,`tortenetek`.`tortenet_datum_kezdet` AS `tortenet_datum_kezdet`,`tortenetek`.`tortenet_datum_vege` AS `tortenet_datum_vege`,count(distinct case when `likes`.`tetszik` = 1 then `likes`.`fiok_id` end) AS `likes`,count(distinct case when `likes`.`tetszik` = 0 then `likes`.`fiok_id` end) AS `dislikes`,group_concat(distinct `telepulesek`.`telepules` order by `telepulesek`.`telepules` ASC separator '\n') AS `telepulesek`,group_concat(distinct `telepulesek`.`megye` order by `telepulesek`.`megye` ASC separator '\n') AS `megyek`,`tortenetek`.`kep_url` AS `kep_url`,group_concat(distinct concat(`fiok_hozzaszolas`.`felhasznalonev`,':',`hozzaszolasok`.`hozzaszolas`) order by `fiok_hozzaszolas`.`felhasznalonev` ASC separator '\n') AS `hozzaszolasok` from ((((((`fiokok` join `tortenetek` on(`fiokok`.`id` = `tortenetek`.`fiok_id`)) join `tortenet_telepules` on(`tortenetek`.`id` = `tortenet_telepules`.`tortenet_id`)) join `telepulesek` on(`tortenet_telepules`.`telepules_id` = `telepulesek`.`id`)) left join `hozzaszolasok` on(`tortenetek`.`id` = `hozzaszolasok`.`tortenet_id`)) left join `fiokok` `fiok_hozzaszolas` on(`hozzaszolasok`.`fiok_id` = `fiok_hozzaszolas`.`id`)) left join `likes` on(`likes`.`tortenet_id` = `tortenetek`.`id`)) group by `tortenetek`.`id`)  ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `tortenet`  AS   (select `tortenetek`.`id` AS `id`,`fiokok`.`felhasznalonev` AS `szerzo`,`fiokok`.`kituntetes` AS `kituntetes`,`tortenetek`.`cim` AS `cim`,`tortenetek`.`tortenet` AS `tortenet`,`tortenetek`.`keletkezes_datum` AS `keletkezes_datum`,`tortenetek`.`tortenet_datum_kezdet` AS `tortenet_datum_kezdet`,`tortenetek`.`tortenet_datum_vege` AS `tortenet_datum_vege`,group_concat(distinct `telepulesek`.`telepules` order by `telepulesek`.`telepules` ASC separator ',\n') AS `telepulesek`,group_concat(distinct `telepulesek`.`megye` order by `telepulesek`.`megye` ASC separator ',\n') AS `megyek`,`tortenetek`.`kep_url` AS `kep_url`,count(distinct case when `likes`.`tetszik` = 1 then `likes`.`fiok_id` end) AS `likes`,count(distinct case when `likes`.`tetszik` = 0 then `likes`.`fiok_id` end) AS `dislikes`,group_concat(distinct concat(`hozzaszolasok`.`id`,':',`fiok_hozzaszolas`.`felhasznalonev`,':',`hozzaszolasok`.`hozzaszolas`,':',`fiok_hozzaszolas`.`id`) order by `fiok_hozzaszolas`.`felhasznalonev` ASC separator '\n') AS `hozzaszolasok` from ((((((`tortenetek` join `fiokok` on(`fiokok`.`id` = `tortenetek`.`fiok_id`)) join `tortenet_telepules` on(`tortenetek`.`id` = `tortenet_telepules`.`tortenet_id`)) join `telepulesek` on(`tortenet_telepules`.`telepules_id` = `telepulesek`.`id`)) left join `hozzaszolasok` on(`tortenetek`.`id` = `hozzaszolasok`.`tortenet_id`)) left join `fiokok` `fiok_hozzaszolas` on(`hozzaszolasok`.`fiok_id` = `fiok_hozzaszolas`.`id`)) left join `likes` on(`likes`.`tortenet_id` = `tortenetek`.`id`)) group by `tortenetek`.`id`)  ;
 
 --
 -- Indexek a kiírt táblákhoz
@@ -3440,7 +3499,7 @@ ALTER TABLE `tortenet_telepules`
 -- AUTO_INCREMENT a táblához `fiokok`
 --
 ALTER TABLE `fiokok`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT a táblához `hozzaszolasok`
@@ -3458,7 +3517,7 @@ ALTER TABLE `telepulesek`
 -- AUTO_INCREMENT a táblához `tortenetek`
 --
 ALTER TABLE `tortenetek`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Megkötések a kiírt táblákhoz
