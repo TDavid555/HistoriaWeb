@@ -98,7 +98,7 @@
                     <div class="card tortenet" *ngFor="let tortenet of legutobbi_tortenetek">
                         <div class="card-body" routerLink="/tortenetek/{{tortenet.telepules}}/{{tortenet.id}}">
                             <h5 class="card-title">{{tortenet.cim}}</h5>
-                            <p class="card-text">{{tortenet.tortenet.split(" ").slice(0,20).join(" ")}}...</p>
+                            <p class="card-text">{{tortenet.tortenet}}...</p>
                         </div>
                     </div>
                 </div>
@@ -112,7 +112,7 @@
                         <div class="card-body" routerLink="/tortenetek/{{tortenet.telepulesek}}/{{tortenet.id}}">
                             <h5 class="card-title">{{tortenet.cim}}</h5>
                             <p class="card-text">
-                                {{tortenet.tortenet.split(" ").slice(0,20).join(" ")}}...<br>
+                                {{tortenet.tortenet}}...<br>
                                 <i class="fs-4 bi bi-hand-thumbs-up"></i>{{tortenet.likes}}
                                 <i class="fs-4 bi bi-hand-thumbs-down dislike d-inline-block"></i>{{tortenet.dislikes}}
                             </p>

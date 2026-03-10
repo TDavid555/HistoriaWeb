@@ -1,0 +1,17 @@
+<div class="container bg-white col-lg-6 col-12 my-3">
+    <div class="row vh-100">
+        <div class="col-12 align-self-center text-center">
+            <h1 class="text-center">Email cím ellenorző kód</h1>
+            <form autocomplete="off" class="mt-5" (submit)="Kuldes()">
+                <div class="input-group my-4">
+                    <div class="form-floating">
+                        <input type="number" max="999" min="0" [(ngModel)]="kod" name="kod" class="form-control" placeholder="" id="kod">
+                        <label for="kod">Kód</label>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Küldés</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<app-footer></app-footer>

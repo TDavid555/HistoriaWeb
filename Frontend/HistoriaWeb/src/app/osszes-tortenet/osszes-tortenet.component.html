@@ -30,7 +30,7 @@
             <div class="card" routerLink="/tortenetek/{{tortenet.telepules}}/{{tortenet.id}}">
                 <div class="card-body">
                     <h5 class="card-title">{{tortenet.cim}}</h5>
-                    <p class="card-text">{{tortenet.tortenet.split(" ").slice(0,20).join(" ")}}...</p>
+                    <p class="card-text">{{tortenet.tortenet}}...</p>
                 </div>
             </div>
         </div>
@@ -40,5 +40,6 @@
             <h4 class="text-muted">Nincs megjeleníthető történet</h4>
         </div>
     </div>
-    <app-footer></app-footer>
 </div>
+<app-footer></app-footer>
+

@@ -16,7 +16,8 @@ export class TortenetekComponent {
     this.telepules=this.router.snapshot.paramMap.get("telepules");
     this.tortenetekService.getTortenetekByTelepules(this.telepules).subscribe(tortenetek=>{
       this.tortenetek=tortenetek.map(i=>{
-        i.keletkezes_datum=new Date(i.keletkezes_datum).toLocaleDateString()
+        i.keletkezes_datum=new Date(i.keletkezes_datum).toLocaleDateString();
+        i.tortenet=i.tortenet.split(" ").slice(0,20).join(" ");
         return i;
       });
     });

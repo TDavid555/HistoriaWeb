@@ -1,18 +1,18 @@
 <div class="container-fluid">
   <div class="row p-5 gy-3">
-    <div class="col-12">
+    <div class="col-12 m-2 bg-white rounded p-3">
       <h1 class="text-center">{{tortenet.cim}}</h1>
-      <div class="row text-center bg-white gy-3 my-5 p-3">
+      <div class="row text-center bg-primary text-white gy-3 my-5 p-2">
         <div class="col-12 col-lg-3">Megyék: <br>{{tortenet.megyek}}</div>
         <div class="col-12 col-lg-3">Települések: <br>{{tortenet.telepulesek}}</div>
         <div class="col-12 col-lg-3">Szerző:<br>{{tortenet.szerzo}}</div>
         <div class="col-12 col-lg-3">Történés időszaka: <br>{{tortenet.tortenet_datum_kezdet}}-{{tortenet.tortenet_datum_vege}}</div>
       </div>
-      <div class="row bg-white p-3 gy-3">
+      <div class="row gy-3">
         <div class="col-12">
           <p>{{tortenet.tortenet}}</p>
         </div>
-        <div class="col-12 justify-content-center d-flex">
+        <div class="col-12 justify-content-center d-flex" *ngIf="tortenet.kep_url">
           <img style="max-height: 720px;" class="img-fluid img-thumbnail" src="{{tortenet.kep_url}}">
         </div>
         <div class="col-12">
@@ -25,22 +25,53 @@
       </div>
     </div>
     <div class="col-12">
-      <h3>Hozzászólások</h3>
-      <form (submit)="Kuldes()" class="my-3">
-        <div class="form-floating my-3">
-          <textarea class="form-control" id="hozzaszolas" [disabled]="Van()" [(ngModel)]="hozzaszolas" placeholder="" name="hozzaszolas"></textarea>
-          <label for="hozzaszolas">Hozzászólás</label>
-          <div class="invalid-tooltip">
-            Kötelező kitölteni!
-          </div>
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+          <h3 class="mb-0 h5"><i class="bi bi-chat-dots me-2"></i>Hozzászólások</h3>
+          <span class="badge bg-light text-primary" *ngIf="tortenet.hozzaszolasok">
+            {{tortenet.hozzaszolasok.length}} db
+          </span>
         </div>
-        <button class="btn btn-primary" [disabled]="Van()" type="submit">Küldés</button>
-      </form>
-      <div class="bg-white" id="hozzaszolasok">
-        <div *ngIf="tortenet.hozzaszolasok!=null">
-          <p *ngFor="let hozzaszolas of tortenet.hozzaszolasok.split('\n')">
-            {{hozzaszolas}}
-          </p>
+    
+        <div class="card-body bg-light">
+          <form (submit)="Kuldes()" class="mb-4 bg-white p-3 rounded shadow-sm">
+            <div class="form-floating mb-2">
+              <textarea class="form-control border-0 bg-light" id="hozzaszolas" [disabled]="Van()" [(ngModel)]="hozzaszolas"  placeholder="Írj valamit..." name="hozzaszolas">
+              </textarea>
+              <label for="hozzaszolas">Oszd meg a véleményed...</label>
+            </div>
+            <div class="d-flex justify-content-end">
+              <button class="btn btn-primary px-4 rounded-pill" [disabled]="Van()" type="submit">
+                <i class="bi bi-send me-1"></i> Küldés
+              </button>
+            </div>
+          </form>
+          <div id="hozzaszolasok" class="mt-3">
+            <div *ngIf="tortenet.hozzaszolasok; else noComments">
+              <div *ngFor="let hozzaszolas of tortenet.hozzaszolasok" class="card mb-2 border-0 shadow-sm">
+                <div class="card-body p-3">
+                  <div class="d-flex justify-content-between align-items-start">
+                    <div class="flex-grow-1">
+                      <h5>{{hozzaszolas.felhasznalonev}}</h5>
+                      <p class="mb-0 text-dark">{{hozzaszolas.hozzaszolas}}</p>
+                    </div>
+                    <div class="ms-2 d-flex gap-1">
+                      <button class="btn btn-outline-danger btn-sm border-0" (click)="Torles(hozzaszolas.id)" [disabled]="Hozzaszolas(hozzaszolas.fiok_id)" title="Visszavonás / Törlés">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        
+            <ng-template #noComments>
+              <div class="text-center py-4 text-muted">
+                <i class="bi bi-chat-left-quote display-4 d-block mb-2"></i>
+                Még nincs hozzászólás. Legyél te az első!
+              </div>
+            </ng-template>
+          </div>
         </div>
       </div>
     </div>

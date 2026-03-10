@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
+import { LoginService } from './login.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class Bejelentkezett implements CanActivate {
-  constructor(private router: Router) {}
+export class Ellenorzes implements CanActivate {
+  constructor(private router: Router,private loginService:LoginService) {}
 
   canActivate(): boolean {
-    const bejelentkezett = !!localStorage.getItem('id');
-    if (!bejelentkezett) {
+    if (this.loginService.kod=="") {
       this.router.navigate(['/hitelesito']);
       return false;
     }

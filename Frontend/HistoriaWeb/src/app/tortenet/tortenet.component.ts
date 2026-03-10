@@ -23,8 +23,18 @@ export class TortenetComponent implements OnInit {
       tortenet.tortenet_datum_kezdet=new Date(tortenet.tortenet_datum_kezdet).toLocaleDateString();
       tortenet.tortenet_datum_vege=new Date(tortenet.tortenet_datum_vege).toLocaleDateString();
       tortenet.keletkezes_datum=new Date(tortenet.keletkezes_datum).toLocaleString();
+      if(tortenet.hozzaszolasok){
+        tortenet.hozzaszolasok=tortenet.hozzaszolasok.split("\n").map(i=>{
+          const sor=i.split(":");
+          return {id:parseInt(sor[0]),felhasznalonev:sor[1],hozzaszolas:sor[2],fiok_id:sor[3]};
+        });
+      }
       this.tortenet=tortenet;
     });
+  }
+
+  Hozzaszolas(id:string):boolean{
+    return localStorage.getItem("id")!=id;
   }
 
   Kuldes():void{
@@ -105,6 +115,12 @@ export class TortenetComponent implements OnInit {
 
   Van():boolean{
     return localStorage.getItem("id")==undefined;
+  }
+
+  Torles(id:number){
+    this.tortenetekService.deleteHozzaszolas(id).subscribe(()=>{
+      this.Tortenet();
+    });
   }
 
 

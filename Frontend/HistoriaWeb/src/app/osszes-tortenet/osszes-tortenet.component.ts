@@ -40,6 +40,7 @@ export class OsszesTortenetComponent implements OnInit {
         console.log('Történetek betöltve:', tortenetek.length, 'db');
         this.osszes_tortenet = tortenetek.map(i => {
           i.keletkezes_datum = new Date(i.keletkezes_datum).toLocaleDateString();
+          i.tortenet=i.tortenet.split(" ").slice(0,20).join(" ")
           return i;
         });
         this.tortenetek = [...this.osszes_tortenet];

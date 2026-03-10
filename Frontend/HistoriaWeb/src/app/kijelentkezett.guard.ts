@@ -8,7 +8,7 @@ export class Kijelentkezett implements CanActivate {
   constructor(private router: Router) {}
 
   canActivate(): boolean {
-    const kijelentkezett = !!localStorage.getItem('id'); // Egyszerű ellenőrzés
+    const kijelentkezett = !!localStorage.getItem('id');
     if (kijelentkezett) {
       this.router.navigate(['/']);
       return false;

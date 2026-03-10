@@ -11,6 +11,10 @@ export class TortenetekService {
   getTortenetekByTelepules(telepules:string):Observable<any>{
     return this.http.get(`${this.api}/tortenet/${telepules}`);
   }
+
+  getRangsor():Observable<any>{
+    return this.http.get(`${this.api}/rangsor`);
+  }
   
   getTortenetByTortenetId(id:number):Observable<any>{
     return this.http.get(`${this.api}/tortenet/telepules/${id}`);
@@ -50,5 +54,9 @@ export class TortenetekService {
 
   deleteLike(tortenet_id:number,fiok_id:number):Observable<any>{
     return this.http.delete(`${this.api}/like/${fiok_id}/${tortenet_id}`);
+  }
+
+  deleteHozzaszolas(id:number):Observable<any>{
+    return this.http.delete(`${this.api}/hozzaszolas/${id}`);
   }
 }

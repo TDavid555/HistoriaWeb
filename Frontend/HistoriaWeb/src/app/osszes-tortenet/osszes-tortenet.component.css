@@ -1,3 +1,7 @@
 .card ,select{
     cursor: pointer;
 }
+#megye{
+    max-height: 200px;
+    height: 50px;
+}

@@ -28,7 +28,9 @@ export class FiokSzerkesztesComponent implements OnInit{
       });
       this.bejelentkezettService.getTortenetByFiokId().subscribe(tortenetek=>{
         this.tortenetek=tortenetek;
-        this.id=tortenetek[0].id;
+        if(tortenetek.length!=0){
+          this.id=tortenetek[0].id;
+        }
       });
   }
 
@@ -88,9 +90,8 @@ export class FiokSzerkesztesComponent implements OnInit{
       document.getElementById("email").classList.add("is-valid");
     }
     if(this.jelszo_pattern.test(this.fiok.jelszo) && this.fiok.jelszo_i==this.fiok.jelszo && this.fiok.felhasznalonev.trim()!="" && (this.felhasznalonev.length==0 || this.felhasznalo==this.fiok.felhasznalonev) && this.email_pattern.test(this.fiok.email)){
-      this.bejelentkezettService.updateFiokById(this.fiok).subscribe(()=>{
-        this.bejelentkezettService.changeId();
-        this.router.navigate(["/"]);
+      this.loginService.Kod_kuldes(this.fiok).subscribe(()=>{
+        this.router.navigate(["/ellenorzo_szerkesztes"]);
       });
     }
   }

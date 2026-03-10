@@ -1,0 +1,26 @@
+<div class="container-fluid">
+    <div class="row vh-100 align-items-center text-center">
+        <h1>Rangsor</h1>
+        <div class="col-12">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Helyezés</th>
+                        <th scope="col">Szerző</th>
+                        <th scope="col">Kitüntetés</th>
+                        <th scope="col">Likes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let sor of rangsor">
+                        <td>{{sor.helyezes}}</td>
+                        <td>{{sor.szerzo}}</td>
+                        <td>{{sor.kituntetes}}</td>
+                        <td>{{sor.likes}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<app-footer></app-footer>

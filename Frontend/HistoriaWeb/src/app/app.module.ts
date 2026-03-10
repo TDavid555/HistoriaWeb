@@ -18,6 +18,9 @@ import { TortenetSzerkesztesComponent } from './tortenet-szerkesztes/tortenet-sz
 import { NgSelectModule, NgDropdownPanelComponent } from '@ng-select/ng-select';
 import { OsszesTortenetComponent } from './osszes-tortenet/osszes-tortenet.component';
 import { NgxPanZoomModule } from 'ngx-panzoom';
+import { EmailEllenorzoComponent } from './email-ellenorzo/email-ellenorzo.component';
+import { EmailEllenorzoSzerkesztesComponent } from './email-ellenorzo-szerkesztes/email-ellenorzo-szerkesztes.component';
+import { RangsorComponent } from './rangsor/rangsor.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +34,10 @@ import { NgxPanZoomModule } from 'ngx-panzoom';
   FooterComponent,
   FiokSzerkesztesComponent,
   TortenetSzerkesztesComponent,
-  OsszesTortenetComponent
+  OsszesTortenetComponent,
+  EmailEllenorzoComponent,
+  EmailEllenorzoSzerkesztesComponent,
+  RangsorComponent
 ],
 
   imports: [

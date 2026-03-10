@@ -50,8 +50,8 @@ export class HitelesitoComponent {
   }
   Kuldes():void{
     if(this.bejelentkezes){
-      this.loginService.getFiok(this.fiok).subscribe(fiok=>{
-        if(fiok==null){
+      this.loginService.getFiok(this.fiok).subscribe(talalat=>{
+        if(talalat==null){
           document.getElementById("felhasznalonev").classList.remove("is-valid");
           document.getElementById("felhasznalonev").classList.add("is-invalid");
           document.getElementById("jelszo").classList.remove("is-valid");
@@ -62,7 +62,7 @@ export class HitelesitoComponent {
           document.getElementById("felhasznalonev").classList.add("is-valid");
           document.getElementById("jelszo").classList.remove("is-invalid");
           document.getElementById("jelszo").classList.add("is-valid");
-          localStorage.setItem("id",fiok.id);
+          localStorage.setItem("id",talalat.id);
           this.bejelentkezesService.changeId();
           this.router.navigate(["/"]);
         }
@@ -104,10 +104,8 @@ export class HitelesitoComponent {
         document.getElementById("email").classList.add("is-valid");
       }
       if(this.jelszo_pattern.test(this.fiok.jelszo) && this.fiok.jelszo_i==this.fiok.jelszo && this.fiok.felhasznalonev.trim()!="" && this.felhasznalonev.length==0 && this.email_pattern.test(this.fiok.email)){
-        this.loginService.addFiok(this.fiok).subscribe(fiok=>{
-          localStorage.setItem("id",fiok.id);
-          this.bejelentkezesService.changeId();
-          this.router.navigate(["/"]);
+        this.loginService.Kod_kuldes(this.fiok).subscribe(()=>{
+          this.router.navigate(["/ellenorzes"]);
         });
       }
     }

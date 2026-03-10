@@ -31,13 +31,19 @@ export class FooldalComponent implements OnInit{
 
   getLegjobbanKedveltTortenetek():void{
     this.tortenetekService.getTortenetekOrderByLikes().subscribe(tortenetek=>{
-      this.legjobban_kedvelt_tortenetek=tortenetek;
+      this.legjobban_kedvelt_tortenetek=tortenetek.map(i=>{
+        i.tortenet=i.tortenet.split(" ").slice(0,20).join(" ")
+        return i;
+      });
     })
   }
 
   getLegutobbiTortenetek():void{
     this.tortenetekService.getTortenetekOrderByDate().subscribe(tortenetek=>{
-      this.legutobbi_tortenetek=tortenetek;
+      this.legutobbi_tortenetek=tortenetek.map(i=>{
+        i.tortenet=i.tortenet.split(" ").slice(0,20).join(" ")
+        return i;
+      });
     })
   }
 }
