@@ -18,12 +18,12 @@
                     <a class="nav-link" aria-current="page" routerLinkActive="active" routerLink="/rangsor">Rangsor</a>
                 </li>
             </ul>
-            <ul class="navbar-nav ms-auto" *ngIf="!fiok">
+            <ul class="navbar-nav ms-auto" *ngIf="!id">
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" routerLinkActive="active" routerLink="/hitelesito">Bejelentkezés/Regisztráció</a>
                 </li>
             </ul>
-            <ul class="navbar-nav ms-auto" *ngIf="fiok">
+            <ul class="navbar-nav ms-auto" *ngIf="id">
                 <li class="nav-item">
                     <a class="nav-link dropdown-toggle" href="#" id="menu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         {{fiok.felhasznalonev}}
