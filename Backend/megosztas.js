@@ -5,7 +5,7 @@ async function Megosztas(local) {
 
   const url = new Promise((resolve) => tunnel.once("url", resolve));
   const link=await url;
-  fs.writeFileSync("../historiaweb-mobilapp/services/url.json",`{"url":"${link}"}`);
+  fs.writeFileSync("../Mobilapp/services/url.json",`{"url":"${link}"}`);
   console.log("LINK:", await url);
 }
 
